@@ -1,7 +1,4 @@
 from selenium_swift.browser import *
-from selenium_swift.web_option import ChromeOption
-from selenium_swift.web_service import ChromeService 
-from selenium_swift.mouse_controller import MouseController
 
 class MyBrowser(ChromeBrowser):
     def __init__(self) -> None:
@@ -13,7 +10,7 @@ class MyBrowser(ChromeBrowser):
         page = await self.get('https://the-internet.herokuapp.com/jqueryui/menu#')
         ################################
         enabled_element = await page.find_element('id',"ui-id-3")
-        mouse = MouseController(page)
+        mouse = page.mouse
         mouse.move_to_element(enabled_element)
         await page.sleep(1)
         ##################################

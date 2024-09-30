@@ -1,7 +1,4 @@
 from selenium_swift.browser import *
-from selenium_swift.web_option import ChromeOption
-from selenium_swift.web_service import ChromeService 
-import time
 
 class MyBrowser(ChromeBrowser):
     def __init__(self) -> None:

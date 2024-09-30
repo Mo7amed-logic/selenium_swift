@@ -6,7 +6,6 @@ class Scrap(PageScrape):
         for quote in quote_elements:
             print(quote.text)
 
-
 class MyBrowser(ChromeBrowser):
     def __init__(self) -> None:
         super().__init__(ChromeOption(), ChromeService())
