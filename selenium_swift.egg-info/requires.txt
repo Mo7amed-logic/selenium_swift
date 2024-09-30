@@ -1,0 +1,6 @@
+selenium>=4.0.0
+aiohttp>=3.7.4
+webdriver-manager>=3.5.0
+undetected-chromedriver>=3.0.0
+requests>=2.25.1
+Pillow>=8.0.0
