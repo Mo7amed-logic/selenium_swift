@@ -27,7 +27,7 @@ pip install selenium_swift
 ```
 ## Usage Example
 
-Example 1:
+### Example 1:
 This example shows how to use `selenium_swift` to scrape a web page. Follow these steps:
 
 1. Create your own `Scrap` class that extends from the `PageScrape` 
@@ -69,3 +69,105 @@ if __name__ == "__main__":
     Browser.startBrowsers([MyBrowser()])
 ```
 
+### Example 2: Concurrent File Upload and Download
+This example demonstrates how to concurrently upload and download files using the `selenium_swift` package with a custom browser class. 
+
+#### Step 1: Create the MyBrowser Class
+In this step, we will create a class named `MyBrowser` for example , which extends from the `ChromeBrowser` class. This class will contain two asynchronous methods: `tab_download` and `tab_upload`. Each method will handle a specific functionality—downloading files and uploading files—by opening separate tabs in the browser.
+
+```python
+from selenium_swift.browser import *
+
+class MyBrowser(ChromeBrowser):
+    def __init__(self) -> None:
+        # Set the download directory
+        self.path_download = r"c:\Users\progr\OneDrive\Bureau\test_download"
+        option = ChromeOption('download.default_directory=' + self.path_download)
+        super().__init__(option, ChromeService())
+
+```
+- **Initialization:** The `__init__` method sets the download directory for downloaded files using the `ChromeOption` class. This ensures that all downloaded files will be saved to the specified path.
+
+#### Step 2: Implement the `tab_download` Method
+The `tab_download` method will navigate to a page that contains downloadable files. It will identify links to PDF files and initiate the download process.
+
+```python
+    async def tab_download(self):
+        # Navigate to the download page
+        page = await self.get('https://the-internet.herokuapp.com/download')
+        link_list = await page.find_elements('css_selector', 'a')
+        
+        # Iterate through the links and click on those that end with '.pdf'
+        for link in link_list:
+            if link.text.endswith('.pdf'):
+                link.click()
+        
+        # Wait for the download to complete (put this statment in the end of the tab)
+        await page.wait_for_Download(self.path_download)
+```
+- **File Download Logic:** The method retrieves all links on the page and checks if they end with the `.pdf` extension. If so, it clicks the link to start the download.
+
+- **Waiting for Downloads:** The await `page.wait_for_Download(self.path_download)` statement ensures that the method waits until the download is completed before browser close all the tabs. 
+
+#### Step 3: Implement the `tab_upload` Method
+The `tab_upload` method will navigate to a file upload page, locate the file input element, and upload a specified file.
+
+```python
+    async def tab_upload(self):
+        # Navigate to the upload page
+        page = await self.get('https://the-internet.herokuapp.com/upload')
+        
+        # Locate the file input element and upload a file
+        input_file = await page.find_element('id', "file-upload")
+        input_file.send_file(r'c:\Users\progr\Downloads\DATA_Data_Analysis_2_AR.pdf')
+        
+        # Optional: wait for a brief period to ensure the file is uploaded
+        await page.sleep(3)
+
+```
+
+- **File Upload Logic:** The method retrieves the file input element by its ID and uses the `send_file` method to upload a specified file from the local system.
+- **Sleep Function:** The `await page.sleep(3)` statement pauses the execution for 3 seconds, allowing time for the file upload to complete. It’s important to use `page.sleep()` instead of time.sleep() in asynchronous code. Using `time.sleep()` will block the entire event loop, preventing other asynchronous tasks from running, which can lead to unresponsive behavior in your application. By using `await page.sleep()`, the event loop remains active, allowing other tasks to be executed concurrently while waiting.
+
+#### Step 4: Running the Browser
+Finally, we will execute the `MyBrowser` class to start the browser and perform the file upload and download tasks concurrently.
+
+```python
+if __name__ == "__main__":
+    Browser.startBrowsers([MyBrowser()])
+
+```
+### Summary 
+This example showcases how to create a custom browser class using selenium_swift for handling file uploads and downloads. By organizing the functionality into methods, you can easily maintain and extend the capabilities of your web scraping tasks.
+```python
+from selenium_swift.browser import *
+
+class MyBrowser(ChromeBrowser):
+    def __init__(self) -> None:
+        # Set the download directory
+        self.path_download = r"c:\Users\progr\OneDrive\Bureau\test_download"
+        option = ChromeOption('download.default_directory=' + self.path_download)
+        super().__init__(option, ChromeService())
+    async def tab_download(self):
+        # Navigate to the download page
+        page = await self.get('https://the-internet.herokuapp.com/download')
+        link_list = await page.find_elements('css_selector', 'a')
+        
+        # Iterate through the links and click on those that end with '.pdf'
+        for link in link_list:
+            if link.text.endswith('.pdf'):
+                link.click()
+        
+        # Wait for the download to complete (put this statment in the end of the tab)
+        await page.wait_for_Download(self.path_download)
+    async def tab_upload(self):
+        # Navigate to the upload page
+        page = await self.get('https://the-internet.herokuapp.com/upload')
+        
+        # Locate the file input element and upload a file
+        input_file = await page.find_element('id', "file-upload")
+        input_file.send_file(r'c:\Users\progr\Downloads\DATA_Data_Analysis_2_AR.pdf')
+        
+        # Optional: wait for a brief period to ensure the file is uploaded
+        await page.sleep(3)
+```
