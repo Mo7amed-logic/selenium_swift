@@ -24,13 +24,17 @@ Install `selenium_swift` from PyPI using pip:
 
 ```bash
 pip install selenium_swift
-
+```
 ## Usage Example
+
 Example 1:
 This example shows how to use `selenium_swift` to scrape a web page. Follow these steps:
 
-1. Create your own `Scrap` class that extends from the `PageScrape` class and contains the `async def onResponse` method that includes your **arg**.
-2. Create a `MyBrowser` class that extends from `ChromeBrowser`, `FirefoxBrowser`, or `EdgeBrowser`. Here, I use `ChromeBrowser`. You should create async methods that begin with "tab", e.g., `tab_1`, `tab_2`, etc. Each tab method will open a tab in your browser.
+1. Create your own `Scrap` class that extends from the `PageScrape` 
+class and contains the `async def onResponse` method that includes your **arg**.
+2. Create a `MyBrowser` class that extends from `ChromeBrowser`, `FirefoxBrowser`, or `EdgeBrowser`.
+Here, I use `ChromeBrowser`. You should create async methods that begin with "tab", e.g.,
+`tab_1`, `tab_2`, etc. Each tab method will open a tab in your browser.
 
 ```python
 from selenium_swift.browser import * 
@@ -63,4 +67,5 @@ class MyBrowser(ChromeBrowser):
 
 if __name__ == "__main__":
     Browser.startBrowsers([MyBrowser()])
+```
 
