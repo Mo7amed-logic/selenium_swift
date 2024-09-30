@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
 ```
 ### Summary 
-This example showcases how to create a custom browser class using selenium_swift for handling file uploads and downloads. By organizing the functionality into methods, you can easily maintain and extend the capabilities of your web scraping tasks.
+This example showcases how to create a custom browser class using `selenium_swift` for handling file uploads and downloads. By organizing the functionality into methods, you can easily maintain and extend the capabilities of your web scraping tasks.
 ```python
 from selenium_swift.browser import *
 
@@ -171,3 +171,102 @@ class MyBrowser(ChromeBrowser):
         # Optional: wait for a brief period to ensure the file is uploaded
         await page.sleep(3)
 ```
+### Example 3: Custom Page Handling in selenium_swift
+
+This example demonstrates how to create custom page classes that extend the `PageEvent` class within the `selenium_swift` framework. This approach allows for modular and organized handling of web interactions, such as downloading and uploading files.
+
+#### Overview
+In this implementation, two separate pages are created:
+1. **PageDownload:** This class is designed for downloading files from a specific webpage.
+2. **PageUpload:** This class facilitates uploading files to a designated webpage.
+
+You can create custom page classes to manage complex interactions, such as clicks, file uploads, mouse events, and other interactions.
+
+#### Implementation
+```python
+from selenium_swift.browser import *
+
+# Define the PageDownload class to handle file downloads
+class PageDownload(PageEvent):
+    def __init__(self) -> None:
+        super().__init__('https://the-internet.herokuapp.com/download')
+    async def download_images(self):
+        link_list = await self.find_elements('css_selector', 'a')
+        for link in link_list:
+            if link.text.endswith(('.png', '.jpg')):
+                link.click()
+
+    async def download_pdf(self):
+        link_list = await self.find_elements('css_selector', 'a')
+        for link in link_list:
+            if link.text.endswith('.pdf'):
+                link.click()
+
+    async def download_text_files(self):
+        link_list = await self.find_elements('css_selector', 'a')
+        for link in link_list:
+            if link.text.endswith('.txt'):
+                link.click()
+
+# Define the PageUpload class to handle file uploads
+class PageUpload(PageEvent):
+    def __init__(self) -> None:
+        super().__init__('https://the-internet.herokuapp.com/upload')
+
+    async def upload_image(self, image_path):
+        input_file = await self.find_element('id', "file-upload")
+        input_file.send_file(image_path)
+
+    async def upload_pdf(self, pdf_path):
+        input_file = await self.find_element('id', "file-upload")
+        input_file.send_file(pdf_path)
+
+    async def upload_text_file(self, text_file_path):
+        input_file = await self.find_element('id', "file-upload")
+        input_file.send_file(text_file_path)
+
+# Define the MyBrowser1 class to manage download and upload actions
+class MyBrowser1(ChromeBrowser):
+    def __init__(self) -> None:
+        self.path_download = r"c:\Users\progr\OneDrive\Bureau\test_download"
+        option = ChromeOption('download.default_directory=' + self.path_download)
+        super().__init__(option, ChromeService())
+
+    async def tab_download(self):
+        page_download = await PageDownload().open()
+        await page_download.download_pdf()
+        await page_download.download_images()
+        await page_download.download_text_files()
+        await page_download.wait_for_Download(self.path_download)
+
+    async def tab_upload(self):
+        page_upload = await PageUpload().open()
+        await page_upload.upload_image(r"c:\Users\progr\Downloads\nature2.jpg")
+        await page_upload.upload_pdf(r"c:\Users\progr\Downloads\DATA_Data_Analysis_2_AR.pdf")
+        await page_upload.upload_text_file(r'd:\ascii.txt')
+        await page_upload.sleep(3)
+
+# Start the browser and run the download and upload tasks
+if __name__ == "__main__":
+    Browser.startBrowsers([MyBrowser1()])
+```
+
+#### Explanation
+1. **Custom Page Classes:** 
+    - **PageDownload:** This class encapsulates methods to download different file types. Each method fetches all links on the page and clicks on the ones that match the specified file extensions.
+        - `download_images()`: Downloads image files with `.png` or `.jpg` extensions.
+        - `download_pdf()`: Downloads files with a `.pdf` extension.
+        - `download_text_files()`: Downloads files with a `.txt` extension.
+    - **PageUpload:** This class provides methods to upload files. Each method allows for the upload of a specific file type.  
+        - `upload_image(image_path)`: Uploads an image file.
+        - `upload_pdf(pdf_path)`: Uploads a PDF file.
+        - `upload_text_file(text_file_path)`: Uploads a text file.
+2. **MyBrowser1 Class:**
+    - This class extends `ChromeBrowser` and manages two separate tabs for downloading and uploading files. The methods prefixed with `tab_` signal to the browser that they will open a new tab.
+    - `tab_download()`: Opens the download page and executes methods to download various file types, followed by waiting for the download to complete.
+    - `tab_upload()`: Opens the upload page and executes methods to upload specified files. The sleep method is called to pause execution for a brief period, allowing the upload to complete.
+
+#### Conclusion
+By extending the `PageEvent` class, you can create specialized page handling classes that streamline file download and upload processes, making your web scraping tasks more efficient and organized. This structure also enhances readability and maintainability of your code.
+
+
