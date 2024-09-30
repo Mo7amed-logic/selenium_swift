@@ -24,3 +24,43 @@ Install `selenium_swift` from PyPI using pip:
 
 ```bash
 pip install selenium_swift
+
+## Usage Example
+Example 1:
+This example shows how to use `selenium_swift` to scrape a web page. Follow these steps:
+
+1. Create your own `Scrap` class that extends from the `PageScrape` class and contains the `async def onResponse` method that includes your **arg**.
+2. Create a `MyBrowser` class that extends from `ChromeBrowser`, `FirefoxBrowser`, or `EdgeBrowser`. Here, I use `ChromeBrowser`. You should create async methods that begin with "tab", e.g., `tab_1`, `tab_2`, etc. Each tab method will open a tab in your browser.
+
+```python
+from selenium_swift.browser import * 
+
+class Scrap(PageScrape):
+    async def onResponse(self, **arg):
+        quote_elements = await self.find_elements('css_selector','.text')
+        for quote in quote_elements:
+            print(quote.text)
+
+class MyBrowser(ChromeBrowser):
+    def __init__(self) -> None:
+        super().__init__(ChromeOption(), ChromeService())
+
+    async def tab_1(self):
+        for i in range(1, 3):
+            await Scrap(f'https://quotes.toscrape.com/page/{i}/').crawl(my_index=i)
+
+    async def tab_2(self):
+        for i in range(3, 6):
+            await Scrap(f'https://quotes.toscrape.com/page/{i}/').crawl(my_index=i)
+
+    async def tab_3(self):
+        for i in range(6, 9):
+            await Scrap(f'https://quotes.toscrape.com/page/{i}/').crawl(my_index=i)
+
+    async def tab_4(self):
+        for i in range(9, 11):
+            await Scrap(f'https://quotes.toscrape.com/page/{i}/').crawl(my_index=i)
+
+if __name__ == "__main__":
+    Browser.startBrowsers([MyBrowser()])
+
