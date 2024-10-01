@@ -1,7 +1,7 @@
 selenium_swift
 ==============
 
-.. toctree::
-   :maxdepth: 4
-
-   selenium_swift
+.. automodule:: selenium_swift
+   :members:
+   :undoc-members:
+   :show-inheritance:
