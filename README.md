@@ -23,7 +23,7 @@
 Install `selenium_swift` from PyPI using pip:
 
 ```bash
-pip install selenium_swift
+pip install selenium-swift
 ```
 ## Usage Example
 
