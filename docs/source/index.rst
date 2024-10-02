@@ -10,7 +10,7 @@ Welcome to selenium_swift's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   modules    # Ensure there's no comment after the filename
+   modules  # Ensure there's no comment after the filename
 
 Indices and tables
 ==================

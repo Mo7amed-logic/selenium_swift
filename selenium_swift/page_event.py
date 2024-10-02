@@ -231,6 +231,8 @@ class PageEvent:
             PageEvent.__ACTUAL_PAGE_INDEX = self.__page_index
             
             tab['actual_index'] = self.__page_index    
+        if not self.driver :
+            self.driver = Browser.ACTUAL_DRIVER
         Browser.ACTUAL_DRIVER = self.driver
         if not isFromeBind:
             isActive = False
@@ -269,7 +271,8 @@ class PageEvent:
         Returns:
             NextPage: An instance of NextPage for further interactions.
         """
-        return NextPage(self.driver)
+        
+        return NextPage()
     def wait_for(self,by:_BY,value:str,timeout=10):
         """
          Waits for an element of the current page to be present within the specified timeout. 
@@ -449,12 +452,12 @@ class PageEvent:
         return self.__mouse_controller 
 
 class NextPage(PageEvent):
-    def __init__(self,driver) -> None:
+    def __init__(self) -> None:
         super().__init__(None)
-        self.driver = driver
         self._focus()
     def open(self):
         return self
+    
      
 
      
