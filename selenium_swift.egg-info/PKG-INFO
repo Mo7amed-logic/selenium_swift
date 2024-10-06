@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: selenium_swift
-Version: 0.1.1
+Version: 0.1.2
 Summary: A high-performance async web scraping and automation framework using Selenium.
 Home-page: https://github.com/Mo7amed-logic/selenium_swift
 Author: Mo7amed-logic
@@ -26,7 +26,7 @@ Requires-Dist: requests>=2.25.1
 Requires-Dist: Pillow>=8.0.0
 
 # selenium_swift
-<img src="/selen_img1.webp" alt="selenium_swift" width="300"/>
+<img src="https://raw.githubusercontent.com/Mo7amed-logic/selenium_swift/refs/heads/master/selen_img1.webp" alt="selenium_swift" width="300"/>
 
 **`selenium_swift`** is a powerful Python package designed to accelerate and simplify web scraping tasks using Selenium. With a focus on speed, accuracy, and ease of use, `selenium_swift` offers advanced features that cater to both beginners and experienced developers.
 

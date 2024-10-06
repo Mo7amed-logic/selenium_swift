@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='selenium_swift',
-    version='0.1.1',
+    version='0.1.2',
     author='Mo7amed-logic',
     author_email='medhasnaoui833@gmail.com',
     description='A high-performance async web scraping and automation framework using Selenium.',

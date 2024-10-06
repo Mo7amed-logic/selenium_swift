@@ -1,5 +1,5 @@
 # selenium_swift
-<img src="/selen_img1.webp" alt="selenium_swift" width="300"/>
+<img src="https://raw.githubusercontent.com/Mo7amed-logic/selenium_swift/refs/heads/master/selen_img1.webp" alt="selenium_swift" width="300"/>
 
 **`selenium_swift`** is a powerful Python package designed to accelerate and simplify web scraping tasks using Selenium. With a focus on speed, accuracy, and ease of use, `selenium_swift` offers advanced features that cater to both beginners and experienced developers.
 
