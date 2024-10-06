@@ -26,6 +26,7 @@ Requires-Dist: requests>=2.25.1
 Requires-Dist: Pillow>=8.0.0
 
 # selenium_swift
+<img src="/selen_img1.webp" alt="selenium_swift" width="300"/>
 
 **`selenium_swift`** is a powerful Python package designed to accelerate and simplify web scraping tasks using Selenium. With a focus on speed, accuracy, and ease of use, `selenium_swift` offers advanced features that cater to both beginners and experienced developers.
 
@@ -50,11 +51,190 @@ Requires-Dist: Pillow>=8.0.0
 Install `selenium_swift` from PyPI using pip:
 
 ```bash
-pip install selenium_swift
+pip install selenium-swift
 ```
 ## Usage Example
 
 ### Example 1:
+#### Explanation
+This example demonstrates how to handle interactions with pages that open as a result of an event (such as a click or key press) using a custom browser class built on top of `ChromeBrowser`. The code showcases how to find elements on a page, trigger events to open new pages, and interact with the newly opened pages asynchronously.
+
+##### Key Concepts:
+
+1. **Browser Class:** We define a class `MyBrowser` that extends from `ChromeBrowser` to customize browser behavior.
+
+2. **Async Tab Method:** Methods that interact with browser tabs should be named with a `tab` prefix, which the framework recognizes as a tab interaction.
+
+3. **Page Navigation:** The example shows how to load a page, find specific elements (in this case, product thumbnails), and handle page transitions when an event (like a click) triggers the opening of a new page.
+
+4. **Handling New Pages:** After triggering an event that opens a new page, the script switches focus to the new page and interacts with its contents.
+
+#### Example Code 
+
+```python
+from selenium_swift.browser import * 
+
+class MyBrowser(ChromeBrowser):
+    """
+    MyBrowser extends ChromeBrowser to define custom interactions with web pages.
+    This class demonstrates how to interact with elements on a page and handle events
+    that open new browser tabs or windows.
+    """
+    
+    def __init__(self) -> None:
+        # Initialize the browser with Chrome-specific options and service
+        super().__init__(ChromeOption(), ChromeService())
+    
+    async def tab_1(self):
+        """
+        This method opens a webpage and interacts with its elements. Specifically, it clicks on
+        product thumbnails, which open new pages, and interacts with the newly opened page.
+        """
+        # Open the page at the specified URL
+        page = await self.get('https://books.toscrape.com/')
+        
+        # Find all product elements in page
+        products = await page.find_elements('css_selector', '.thumbnail')
+        print(f"Found {len(products)} products.")
+        
+        # Loop through each product, click it to open a new page, and interact with the new page
+        for prd in products:
+            # Click the product, which opens a new page
+            prd.click()
+            
+            # Switch focus to the newly opened page
+            infoPage = page.focus_to_new_page()
+            
+            # Find the rows in the table on the new page using a CSS selector
+            table_rows = await infoPage.find_elements('css_selector', 'table[class*="table-stripe"] tr')
+            print("********** Table Content **********")
+            
+            # Loop through the table rows and print their text content
+            for row in table_rows:
+                print(row.text)
+    
+if __name__ == "__main__":
+    # Start the browser with an instance of MyBrowser
+    Browser.startBrowsers([MyBrowser()])
+```
+
+#### Breakdown of the Code
+1. `MyBrowser` Class: This class inherits from `ChromeBrowser`. Inside, we define the `tab_1` method to represent interactions on the first tab on window opened by the browser.
+    - The `super().__init__(ChromeOption(), ChromeService()) `ensures that the browser is initialized with default Chrome options and services.
+
+2. `tab_1` Method:
+    - This method loads the page `https://books.toscrape.com/.`
+    - It finds all product elements on the page using the CSS selector .`thumbnail.`
+    - For each product, the script clicks it, causing a new page to open.
+    - Once the new page is opened, the script switches focus to that page using `focus_to_new_page().`
+    - It then locates a table of data on the new page using a CSS selector, iterates through the rows, and prints the content of each row.
+
+3. Browser Startup: The `if __name__ == "__main__":` block ensures that the script runs the browser when executed. It calls `Browser.startBrowsers([MyBrowser()])` to start the browser and execute the interactions defined in `tab_1`.
+
+#### Key Considerations
+- **Async Interactions:** The example utilizes async programming to handle potentially slow operations (like loading a page or finding elements) without blocking the main thread.
+- **Scalability:** You can extend this by adding more tab methods (e.g., `tab_2`, `tab_3`, etc.) to handle different interactions or pages.
+- **Error Handling:** In production environments, adding error handling (e.g., for timeouts or missing elements) is important for robustness.
+
+This example is designed to demonstrate how to automate interaction with pages that open through events and how to interact with the newly opened page.
+
+
+### Example 2:
+#### Explanation
+This example demonstrates how to interact with new pages opened by an event (e.g., a click) using an object-oriented approach. Instead of directly focusing on a new page using `focus_to_new_page()`, we create a `PageInfo` class that extends `NextPage`, a base class designed for handling pages that are opened from other pages.
+
+##### Key Concepts: 
+1. **Page Class (`PageInfo`):** This class inherits from `NextPage` and is used to represent and interact with pages that are opened by user interactions (like clicking on an element).
+
+2. **Separation of Concerns:** Each page interaction is encapsulated within its own class, making the code modular and easier to maintain.
+
+3. **Async Page Interactions:** The `showData` method in `PageInfo` asynchronously finds elements and displays their data, demonstrating how to interact with a newly opened page.
+
+### Example Code 
+```python 
+from selenium_swift.browser import *  # Import base browser classes
+from selenium_swift.web_option import ChromeOption  # Import Chrome options
+from selenium_swift.web_service import ChromeService  # Import Chrome services
+
+class PageInfo(NextPage):
+    """
+    PageInfo is a class that extends NextPage. It is used to handle the
+    new page that opens after interacting with an element on the current page.
+    This class encapsulates interactions with the new page.
+    """
+    def __init__(self) -> None:
+        super().__init__()  # Initialize the NextPage base class
+
+    async def showData(self):
+        """
+        This method finds table rows on the newly opened page and prints the content
+        of each row. The data is located using a CSS selector.
+        """
+        # Locate the table rows using the CSS selector
+        table_rows = await self.find_elements('css_selector', 'table[class*="table-stripe"] tr')
+        
+        # Print the content of each table row
+        print("********** Table Content **********")
+        for row in table_rows:
+            print(row.text)
+
+class MyBrowser(ChromeBrowser):
+    """
+    MyBrowser is a custom browser class that extends ChromeBrowser.
+    It contains methods to interact with the main page and handle navigation
+    to new pages.
+    """
+    def __init__(self) -> None:
+        # Initialize ChromeBrowser with default Chrome options and services
+        super().__init__(ChromeOption(), ChromeService())
+
+    async def tab_1(self):
+        """
+        This method interacts with the first tab. It opens a webpage, locates product elements,
+        and handles navigation to the new page when a product is clicked.
+        """
+        # Load the main page
+        page = await self.get('https://books.toscrape.com/')
+        
+        # Find all product elements on the page
+        products = await page.find_elements('css_selector', '.thumbnail')
+        print(f"Found {len(products)} products.")
+        
+        # Loop through the products and handle interactions with the new page
+        for prd in products:
+            # Click the product, which opens a new page
+            prd.click()
+
+            # Create an instance of PageInfo to represent the new page
+            # and interact with it using the showData method
+            await PageInfo().showData()
+
+if __name__ == "__main__":
+    # Start the browser with an instance of MyBrowser and open the first tab
+    Browser.startBrowsers([MyBrowser()])
+
+```
+### Breakdown of the Code
+1. **`PageInfo` Class:**
+    - This class extends `NextPage`, which is designed to represent a page that opens as a result of an interaction (like clicking on an element).
+    - The method `showData` asynchronously finds table rows using a CSS selector and prints the content of each row.
+
+2. **`MyBrowser` Class:**
+    - This class extends `ChromeBrowser` and defines the `tab_1` method for interactions on the main page.
+    - It opens the main page (`https://books.toscrape.com/`) and locates all product elements using the `.thumbnail` CSS selector.
+    - When a product is clicked, a new page opens. Instead of focusing directly on the new page, an instance of `PageInfo` is created, and the `showData` method is called to interact with the new page.
+
+3. **Browser Flow:**
+    - The browser starts by opening the main page, where it finds and clicks on product elements.
+    - Each click opens a new page, which is handled by `PageInfo.` This class abstracts the interaction with the newly opened page, making the code cleaner and more modular.
+
+4. **Object-Oriented Design:**
+    - By using a class (`PageInfo`) to represent the new page, you ensure that all interactions with that page are encapsulated in one place. This separation of concerns makes the code easier to maintain and extend.
+    - The base class `NextPage` can be extended further if more features need to be added, and `PageInfo` can be customized for specific interactions with different pages.
+This example shows how to manage page interactions using class inheritance, following best practices for code organization and readability.
+
+
+### Example 3:
 This example shows how to use `selenium_swift` to scrape a web page. Follow these steps:
 
 1. Create your own `Scrap` class that extends from the `PageScrape` 
@@ -96,7 +276,7 @@ if __name__ == "__main__":
     Browser.startBrowsers([MyBrowser()])
 ```
 
-### Example 2: Concurrent File Upload and Download
+### Example 4: Concurrent File Upload and Download
 This example demonstrates how to concurrently upload and download files using the `selenium_swift` package with a custom browser class. 
 
 #### Step 1: Create the MyBrowser Class
@@ -198,7 +378,7 @@ class MyBrowser(ChromeBrowser):
         # Optional: wait for a brief period to ensure the file is uploaded
         await page.sleep(3)
 ```
-### Example 3: Custom Page Handling in selenium_swift
+### Example 5: Custom Page Handling in selenium_swift
 
 This example demonstrates how to create custom page classes that extend the `PageEvent` class within the `selenium_swift` framework. This approach allows for modular and organized handling of web interactions, such as downloading and uploading files.
 

@@ -402,7 +402,9 @@ class PageEvent:
         Returns:
             PageEvent: The current instance for method chaining.
         """
-        self.driver.execute_script(f"document.documentElement.scrollTop += {dy};")
+        
+        #self.driver.execute_script(f"document.documentElement.scrollTop += {dy};")
+        self.driver.execute_script(f"window.scrollBy(0,{dy});") 
         return self
 
     def scroll_xy_by(self, dx, dy):

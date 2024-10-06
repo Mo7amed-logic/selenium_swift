@@ -168,6 +168,7 @@ class _ElementHandler:
     @staticmethod
     def _convertElement(element:'Element'):
         e:WebElement = element._info['e']
+        if not e:return element
         def get(e):
             parent_element:Element = element._info['parent_element'] 
             by = element._info['by'] 

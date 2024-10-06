@@ -20,8 +20,8 @@ def load_json_data(json_file_path: str) -> dict:
 def save_json_data(data: dict, json_file_path: str) -> bool:
     """Save a dictionary as a JSON file."""
     try:
-        with open(json_file_path, "w") as file:
-            json.dump(data, file, indent=4)
+        with open(json_file_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
         print(f"Data saved successfully to {json_file_path}")
         return True
     except Exception as e:
