@@ -72,11 +72,11 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
  
 <span class="n">args</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span>
-    <span class="s1">&#39;--user-data-dir=...&#39;</span><span class="p">,</span>       <span class="c1"># Path to the user data directory to retain browser state (cookies, cache)</span>
-    <span class="s1">&#39;--headless&#39;</span><span class="p">,</span>                <span class="c1"># Run the browser in headless mode (without UI)</span>
+    <span class="s1">&#39;--user-data-dir=...&#39;</span><span class="p">,</span>       <span class="c1"># Path to the user data directory to retain BrowserManager state (cookies, cache)</span>
+    <span class="s1">&#39;--headless&#39;</span><span class="p">,</span>                <span class="c1"># Run the BrowserManager in headless mode (without UI)</span>
     <span class="s1">&#39;--no-sandbox&#39;</span><span class="p">,</span>              <span class="c1"># Disable the sandbox mode (required for some environments)</span>
     <span class="s1">&#39;download.default_directory=...&#39;</span><span class="p">,</span>  <span class="c1"># Set default download directory</span>
-    <span class="s1">&#39;--proxy-server=...&#39;</span><span class="p">,</span>        <span class="c1"># Use a proxy server for the browser</span>
+    <span class="s1">&#39;--proxy-server=...&#39;</span><span class="p">,</span>        <span class="c1"># Use a proxy server for the BrowserManager</span>
     <span class="s1">&#39;load-extension=...&#39;</span><span class="p">,</span>        <span class="c1"># Load a Chrome extension (used for automation or ad blocking)</span>
     <span class="s1">&#39;--blink-settings=imagesEnabled=false&#39;</span><span class="p">,</span> <span class="c1"># Disable image loading for faster browsing</span>
     <span class="s1">&#39;--disable-css&#39;</span><span class="p">,</span>             <span class="c1"># Disable CSS for speed improvements</span>
@@ -86,53 +86,53 @@
     <span class="s1">&#39;--disable-features=VizDisplayCompositor&#39;</span><span class="p">,</span>  <span class="c1"># Improve headless mode performance</span>
     <span class="s1">&#39;--blink-settings=imagesEnabled=false&#39;</span><span class="p">,</span>  <span class="c1"># (Duplicate, can remove)</span>
     <span class="s1">&#39;--disable-infobars&#39;</span><span class="p">,</span>        <span class="c1"># Hide the &quot;Chrome is being controlled by automated software&quot; message</span>
-    <span class="s1">&#39;--incognito&#39;</span><span class="p">,</span>               <span class="c1"># Launch the browser in incognito mode for privacy</span>
-    <span class="s1">&#39;--start-maximized&#39;</span><span class="p">,</span>         <span class="c1"># Start browser maximized to avoid viewport issues</span>
-    <span class="s1">&#39;--disable-extensions&#39;</span><span class="p">,</span>      <span class="c1"># Disable all browser extensions</span>
+    <span class="s1">&#39;--incognito&#39;</span><span class="p">,</span>               <span class="c1"># Launch the BrowserManager in incognito mode for privacy</span>
+    <span class="s1">&#39;--start-maximized&#39;</span><span class="p">,</span>         <span class="c1"># Start BrowserManager maximized to avoid viewport issues</span>
+    <span class="s1">&#39;--disable-extensions&#39;</span><span class="p">,</span>      <span class="c1"># Disable all BrowserManager extensions</span>
     <span class="s1">&#39;--window-size=1920,1080&#39;</span><span class="p">,</span>   <span class="c1"># Set custom window size</span>
     <span class="s1">&#39;--remote-debugging-port=9222&#39;</span>   <span class="c1"># Enable remote debugging for troubleshooting</span>
     
 <span class="p">]</span>
 
 <span class="k">class</span> <span class="nc">_WebOption</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">browser</span><span class="p">:</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;chrome&#39;</span><span class="p">,</span><span class="s1">&#39;edge&#39;</span><span class="p">,</span><span class="s1">&#39;firefox&#39;</span><span class="p">],</span><span class="n">page_load_strategy</span><span class="p">:</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span><span class="s1">&#39;eager&#39;</span><span class="p">,</span><span class="s1">&#39;none&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;eager&#39;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">:</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">BrowserManager</span><span class="p">:</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;chrome&#39;</span><span class="p">,</span><span class="s1">&#39;edge&#39;</span><span class="p">,</span><span class="s1">&#39;firefox&#39;</span><span class="p">],</span><span class="n">page_load_strategy</span><span class="p">:</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span><span class="s1">&#39;eager&#39;</span><span class="p">,</span><span class="s1">&#39;none&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;eager&#39;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">:</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize WebDriver options for the specified browser.</span>
+<span class="sd">        Initialize WebDriver options for the specified BrowserManager.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            browser: The browser type (&#39;chrome&#39;, &#39;edge&#39;, &#39;firefox&#39;).</span>
+<span class="sd">            BrowserManager: The BrowserManager type (&#39;chrome&#39;, &#39;edge&#39;, &#39;firefox&#39;).</span>
 <span class="sd">            page_load_strategy: Strategy for loading pages (&#39;normal&#39;, &#39;eager&#39;, &#39;none&#39;).</span>
 <span class="sd">            args: Additional arguments for configuring the WebDriver.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If an unsupported browser type is specified.</span>
+<span class="sd">            ValueError: If an unsupported BrowserManager type is specified.</span>
 <span class="sd">        --user-data-dir=...:</span>
 
 <span class="sd">        Definition: Specifies the directory where the user profile data (cookies, local storage, etc.) is stored. This can be used to load a specific user profile or to persist data across sessions.</span>
 <span class="sd">        \n--headless:</span>
 
-<span class="sd">        Definition: Runs the browser in headless mode, which means no GUI is shown. Useful for automated testing or scraping where a graphical interface is not required.</span>
+<span class="sd">        Definition: Runs the BrowserManager in headless mode, which means no GUI is shown. Useful for automated testing or scraping where a graphical interface is not required.</span>
 <span class="sd">        \n--no-sandbox:</span>
 
-<span class="sd">        Definition: Disables the sandboxing feature of the browser, which can be necessary in some environments (like Docker containers) where sandboxing may cause issues. However, this can reduce security.</span>
+<span class="sd">        Definition: Disables the sandboxing feature of the BrowserManager, which can be necessary in some environments (like Docker containers) where sandboxing may cause issues. However, this can reduce security.</span>
 <span class="sd">        \ndownload.default_directory=...:</span>
 
-<span class="sd">        Definition: Sets the default directory for downloaded files. This option is specific to the Chrome and Edge browsers and is used to specify where files should be saved automatically.</span>
+<span class="sd">        Definition: Sets the default directory for downloaded files. This option is specific to the Chrome and Edge BrowserManagers and is used to specify where files should be saved automatically.</span>
 <span class="sd">        \n--proxy-server=...:</span>
 
-<span class="sd">        Definition: Specifies a proxy server for the browser to use. This is useful for routing traffic through a proxy or for bypassing geographical restrictions.</span>
+<span class="sd">        Definition: Specifies a proxy server for the BrowserManager to use. This is useful for routing traffic through a proxy or for bypassing geographical restrictions.</span>
 <span class="sd">        \nload-extension=...:</span>
 
-<span class="sd">        Definition: Loads a browser extension from the specified directory. This can be used to add custom functionality to the browser during automation.</span>
+<span class="sd">        Definition: Loads a BrowserManager extension from the specified directory. This can be used to add custom functionality to the BrowserManager during automation.</span>
 <span class="sd">        \n--blink-settings=imagesEnabled=false:</span>
 
-<span class="sd">        Definition: Disables image loading in the browser, which can speed up page loading times and reduce bandwidth usage. This is particularly useful for web scraping.</span>
+<span class="sd">        Definition: Disables image loading in the BrowserManager, which can speed up page loading times and reduce bandwidth usage. This is particularly useful for web scraping.</span>
 <span class="sd">        \n--disable-css:</span>
 
 <span class="sd">        Definition: Disables the loading of CSS files. This can help speed up page loading times, but may result in pages being rendered incorrectly.</span>
 <span class="sd">        \n--disable-javascript:</span>
 
-<span class="sd">        Definition: Disables JavaScript execution in the browser. This can be useful for scenarios where JavaScript execution is not required or could interfere with automation tasks.</span>
+<span class="sd">        Definition: Disables JavaScript execution in the BrowserManager. This can be useful for scenarios where JavaScript execution is not required or could interfere with automation tasks.</span>
 <span class="sd">        \n--disable-dev-shm-usage:</span>
 
 <span class="sd">        Definition: Disables the use of /dev/shm for shared memory in Linux environments. This option can help avoid issues related to shared memory limitations in certain environments.</span>
@@ -141,7 +141,7 @@
 <span class="sd">        Definition: Disables GPU hardware acceleration. This can be useful if there are issues related to GPU rendering or if you are running in an environment without a GPU.</span>
 <span class="sd">        \n--disable-features=VizDisplayCompositor:</span>
 
-<span class="sd">        Definition: Disables specific browser features, in this case, the VizDisplayCompositor. This can be used to bypass certain rendering issues or improve performance.</span>
+<span class="sd">        Definition: Disables specific BrowserManager features, in this case, the VizDisplayCompositor. This can be used to bypass certain rendering issues or improve performance.</span>
 <span class="sd">        \n--blink-settings=imagesEnabled=false:</span>
 
 <span class="sd">        Definition: (Duplicate of the earlier argument) Disables image loading to speed up browsing.</span>
@@ -152,10 +152,10 @@
 <span class="sd">        Definition:Enable remote debugging for troubleshooting</span>
 
 <span class="sd">        \n--start-maximized</span>
-<span class="sd">        Definition:Start browser maximized to avoid viewport issues</span>
+<span class="sd">        Definition:Start BrowserManager maximized to avoid viewport issues</span>
 
 <span class="sd">        \n--incognito</span>
-<span class="sd">        Definition:Launch the browser in incognito mode for privacy</span>
+<span class="sd">        Definition:Launch the BrowserManager in incognito mode for privacy</span>
 
 <span class="sd">        \n--disable-infobars</span>
 <span class="sd">        Definition:Hide the &quot;Chrome is being controlled by automated software&quot; message</span>
@@ -163,7 +163,7 @@
         <span class="k">def</span> <span class="nf">__addArg</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span><span class="n">args</span><span class="p">):</span>
             <span class="k">if</span>  <span class="s1">&#39;download.default_directory&#39;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
                 <span class="n">download_dir</span> <span class="o">=</span> <span class="n">arg</span><span class="p">[</span><span class="n">arg</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;chrome&#39;</span><span class="p">,</span> <span class="s1">&#39;edge&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">BrowserManager</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;chrome&#39;</span><span class="p">,</span> <span class="s1">&#39;edge&#39;</span><span class="p">]:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">add_experimental_option</span><span class="p">(</span><span class="s1">&#39;prefs&#39;</span><span class="p">,{</span>
                         <span class="s2">&quot;download.default_directory&quot;</span><span class="p">:</span> <span class="n">download_dir</span><span class="p">,</span>
                         <span class="s2">&quot;download.prompt_for_download&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
@@ -172,16 +172,16 @@
                     <span class="p">})</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">profile</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">FirefoxProfile</span><span class="p">()</span>
-                    <span class="n">profile</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;browser.download.dir&quot;</span><span class="p">,</span> <span class="n">download_dir</span><span class="p">)</span>
-                    <span class="n">profile</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;browser.download.folderList&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Use custom download directory</span>
-                    <span class="n">profile</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;browser.helperApps.neverAsk.saveToDisk&quot;</span><span class="p">,</span> <span class="s2">&quot;application/octet-stream&quot;</span><span class="p">)</span>  <span class="c1"># Adjust as needed</span>
+                    <span class="n">profile</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;BrowserManager.download.dir&quot;</span><span class="p">,</span> <span class="n">download_dir</span><span class="p">)</span>
+                    <span class="n">profile</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;BrowserManager.download.folderList&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Use custom download directory</span>
+                    <span class="n">profile</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;BrowserManager.helperApps.neverAsk.saveToDisk&quot;</span><span class="p">,</span> <span class="s2">&quot;application/octet-stream&quot;</span><span class="p">)</span>  <span class="c1"># Adjust as needed</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">browser</span>
-        <span class="k">if</span> <span class="n">browser</span> <span class="o">==</span> <span class="s1">&#39;chrome&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">ChromeOptions</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">browser</span> <span class="o">==</span> <span class="s1">&#39;edge&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">EdgeOptions</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">browser</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">FirefoxOptions</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BrowserManager</span> <span class="o">=</span> <span class="n">BrowserManager</span>
+        <span class="k">if</span> <span class="n">BrowserManager</span> <span class="o">==</span> <span class="s1">&#39;chrome&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">ChromeOptions</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">BrowserManager</span> <span class="o">==</span> <span class="s1">&#39;edge&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">EdgeOptions</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">BrowserManager</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">FirefoxOptions</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="n">__addArg</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">page_load_strategy</span> <span class="o">=</span> <span class="n">page_load_strategy</span> 

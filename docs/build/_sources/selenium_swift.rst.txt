@@ -12,10 +12,10 @@ selenium\_swift.alert\_handler module
    :undoc-members:
    :show-inheritance:
 
-selenium\_swift.browser module
+selenium\_swift.BrowserManager module
 ------------------------------
 
-.. automodule:: selenium_swift.browser
+.. automodule:: selenium_swift.BrowserManager
    :members:
    :undoc-members:
    :show-inheritance:

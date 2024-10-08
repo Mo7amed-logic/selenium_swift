@@ -1,5 +1,5 @@
-from selenium_swift.browser import *
-class MyBrowser(ChromeBrowser):
+from selenium_swift.BrowserManager import *
+class MyBrowserManager(ChromeBrowserManager):
     def __init__(self) -> None:
         super().__init__(ChromeOption(), ChromeService())
     async def tab_1(self):
@@ -19,4 +19,4 @@ class MyBrowser(ChromeBrowser):
          
 
 if __name__ == "__main__":
-    Browser.startBrowsers([MyBrowser()])
+    BrowserManager.startBrowserManagers([MyBrowserManager()])

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>selenium_swift.browser &mdash; selenium_swift 0.1.0 documentation</title>
+  <title>selenium_swift.BrowserManager &mdash; selenium_swift 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -58,7 +58,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">selenium_swift.browser</li>
+      <li class="breadcrumb-item active">selenium_swift.BrowserManager</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -67,8 +67,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for selenium_swift.browser</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.page_event</span> <span class="kn">import</span> <span class="n">PageEvent</span><span class="p">,</span><span class="n">Browser</span><span class="p">,</span><span class="n">NextPage</span>
+  <h1>Source code for selenium_swift.BrowserManager</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.page_event</span> <span class="kn">import</span> <span class="n">PageEvent</span><span class="p">,</span><span class="n">BrowserManager</span><span class="p">,</span><span class="n">NextPage</span>
 <span class="kn">from</span> <span class="nn">.web_option</span> <span class="kn">import</span> <span class="n">ChromeOption</span><span class="p">,</span><span class="n">EdgeOption</span><span class="p">,</span><span class="n">FirefoxOption</span>
 <span class="kn">from</span> <span class="nn">.web_service</span> <span class="kn">import</span> <span class="n">ChromeService</span><span class="p">,</span><span class="n">EdgeService</span><span class="p">,</span><span class="n">FirefoxService</span>
 
@@ -76,7 +76,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
 
 <div class="viewcode-block" id="PageScrape">
-<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.browser.PageScrape">[docs]</a>
+<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.BrowserManager.PageScrape">[docs]</a>
 <span class="k">class</span> <span class="nc">PageScrape</span><span class="p">(</span><span class="n">PageEvent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class to handle the scraping of web pages.</span>
@@ -90,47 +90,47 @@
 <span class="sd">        Handles the response from web requests.</span>
 <span class="sd">        </span>
 <span class="sd">    crawl(**args):</span>
-<span class="sd">        Initiates the crawling process by opening the browser and handling responses.</span>
+<span class="sd">        Initiates the crawling process by opening the BrowserManager and handling responses.</span>
 <span class="sd">        </span>
 <span class="sd">    open():</span>
-<span class="sd">        Placeholder method for opening the browser.</span>
+<span class="sd">        Placeholder method for opening the BrowserManager.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="PageScrape.onResponse">
-<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.browser.PageScrape.onResponse">[docs]</a>
+<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.BrowserManager.PageScrape.onResponse">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">onResponse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">arg</span><span class="p">):</span>
         <span class="k">pass</span> </div>
 
 <div class="viewcode-block" id="PageScrape.crawl">
-<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.browser.PageScrape.crawl">[docs]</a>
+<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.BrowserManager.PageScrape.crawl">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">crawl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">args</span><span class="p">):</span>
         <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>  
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">onResponse</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PageScrape.open">
-<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.browser.PageScrape.open">[docs]</a>
+<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.BrowserManager.PageScrape.open">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></div>
 </div>
 
         
 <span class="c1"># ********************* chrome *****************************</span>
-<div class="viewcode-block" id="ChromeBrowser">
-<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.browser.ChromeBrowser">[docs]</a>
-<span class="k">class</span> <span class="nc">ChromeBrowser</span><span class="p">(</span><span class="n">Browser</span><span class="p">):</span>
+<div class="viewcode-block" id="ChromeBrowserManager">
+<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.BrowserManager.ChromeBrowserManager">[docs]</a>
+<span class="k">class</span> <span class="nc">ChromeBrowserManager</span><span class="p">(</span><span class="n">BrowserManager</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class for managing a Chrome browser instance.</span>
+<span class="sd">    A class for managing a Chrome BrowserManager instance.</span>
 <span class="sd">    </span>
-<span class="sd">    Inherits from the Browser class and provides initialization for Chrome-specific</span>
+<span class="sd">    Inherits from the BrowserManager class and provides initialization for Chrome-specific</span>
 <span class="sd">    options and services.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    option : ChromeOption</span>
-<span class="sd">        The options to configure the Chrome browser.</span>
+<span class="sd">        The options to configure the Chrome BrowserManager.</span>
 <span class="sd">    service : ChromeService</span>
-<span class="sd">        The service to manage the Chrome browser instance.</span>
+<span class="sd">        The service to manage the Chrome BrowserManager instance.</span>
 <span class="sd">    keep_alive : bool, optional</span>
-<span class="sd">        Whether to keep the browser session alive (default is False).</span>
+<span class="sd">        Whether to keep the BrowserManager session alive (default is False).</span>
 <span class="sd">    isUndetectChromedriver : bool, optional</span>
 <span class="sd">        Whether to use an undetectable ChromeDriver (default is False).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -140,23 +140,23 @@
 
 
 <span class="c1"># ********************* firefoxe ***************************</span>
-<div class="viewcode-block" id="FireFoxBrowser">
-<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.browser.FireFoxBrowser">[docs]</a>
-<span class="k">class</span> <span class="nc">FireFoxBrowser</span><span class="p">(</span><span class="n">Browser</span><span class="p">):</span>
+<div class="viewcode-block" id="FireFoxBrowserManager">
+<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.BrowserManager.FireFoxBrowserManager">[docs]</a>
+<span class="k">class</span> <span class="nc">FireFoxBrowserManager</span><span class="p">(</span><span class="n">BrowserManager</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class for managing a Firefox browser instance.</span>
+<span class="sd">    A class for managing a Firefox BrowserManager instance.</span>
 <span class="sd">    </span>
-<span class="sd">    Inherits from the Browser class and provides initialization for Firefox-specific</span>
+<span class="sd">    Inherits from the BrowserManager class and provides initialization for Firefox-specific</span>
 <span class="sd">    options and services.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    option : FirefoxOption</span>
-<span class="sd">        The options to configure the Firefox browser.</span>
+<span class="sd">        The options to configure the Firefox BrowserManager.</span>
 <span class="sd">    service : FirefoxService</span>
-<span class="sd">        The service to manage the Firefox browser instance.</span>
+<span class="sd">        The service to manage the Firefox BrowserManager instance.</span>
 <span class="sd">    keep_alive : bool, optional</span>
-<span class="sd">        Whether to keep the browser session alive (default is False).</span>
+<span class="sd">        Whether to keep the BrowserManager session alive (default is False).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">option</span><span class="p">:</span><span class="n">FirefoxOption</span><span class="p">,</span><span class="n">service</span><span class="p">:</span><span class="n">FirefoxService</span><span class="p">,</span><span class="n">keep_alive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">option</span><span class="p">:</span><span class="n">option</span> <span class="o">=</span> <span class="n">FirefoxOption</span><span class="p">()</span>
@@ -164,23 +164,23 @@
 
 
 <span class="c1"># ********************* edge *******************************</span>
-<div class="viewcode-block" id="EdgeBrowser">
-<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.browser.EdgeBrowser">[docs]</a>
-<span class="k">class</span> <span class="nc">EdgeBrowser</span><span class="p">(</span><span class="n">Browser</span><span class="p">):</span>
+<div class="viewcode-block" id="EdgeBrowserManager">
+<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.BrowserManager.EdgeBrowserManager">[docs]</a>
+<span class="k">class</span> <span class="nc">EdgeBrowserManager</span><span class="p">(</span><span class="n">BrowserManager</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class for managing an Edge browser instance.</span>
+<span class="sd">    A class for managing an Edge BrowserManager instance.</span>
 <span class="sd">    </span>
-<span class="sd">    Inherits from the Browser class and provides initialization for Edge-specific</span>
+<span class="sd">    Inherits from the BrowserManager class and provides initialization for Edge-specific</span>
 <span class="sd">    options and services.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    option : EdgeOption</span>
-<span class="sd">        The options to configure the Edge browser.</span>
+<span class="sd">        The options to configure the Edge BrowserManager.</span>
 <span class="sd">    service : EdgeService</span>
-<span class="sd">        The service to manage the Edge browser instance.</span>
+<span class="sd">        The service to manage the Edge BrowserManager instance.</span>
 <span class="sd">    keep_alive : bool, optional</span>
-<span class="sd">        Whether to keep the browser session alive (default is False).</span>
+<span class="sd">        Whether to keep the BrowserManager session alive (default is False).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">option</span><span class="p">:</span><span class="n">EdgeOption</span><span class="p">,</span><span class="n">service</span><span class="p">:</span><span class="n">EdgeService</span><span class="p">,</span><span class="n">keep_alive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">option</span><span class="p">:</span><span class="n">option</span> <span class="o">=</span> <span class="n">EdgeOption</span><span class="p">()</span>

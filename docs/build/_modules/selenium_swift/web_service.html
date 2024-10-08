@@ -87,17 +87,17 @@
 <div class="viewcode-block" id="WebService">
 <a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.web_service.WebService">[docs]</a>
 <span class="k">class</span> <span class="nc">WebService</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">browser</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;chrome&#39;</span><span class="p">,</span> <span class="s1">&#39;edge&#39;</span><span class="p">,</span> <span class="s1">&#39;firefox&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;chrome&#39;</span><span class="p">,</span> <span class="n">executable_path</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">BrowserManager</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;chrome&#39;</span><span class="p">,</span> <span class="s1">&#39;edge&#39;</span><span class="p">,</span> <span class="s1">&#39;firefox&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;chrome&#39;</span><span class="p">,</span> <span class="n">executable_path</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize WebService for the specified browser.</span>
+<span class="sd">        Initialize WebService for the specified BrowserManager.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            browser: The browser type (&#39;chrome&#39;, &#39;edge&#39;, &#39;firefox&#39;).</span>
-<span class="sd">            executable_path: The path to the browser driver executable. </span>
+<span class="sd">            BrowserManager: The BrowserManager type (&#39;chrome&#39;, &#39;edge&#39;, &#39;firefox&#39;).</span>
+<span class="sd">            executable_path: The path to the BrowserManager driver executable. </span>
 <span class="sd">                If not provided, WebDriverManager installs the driver automatically.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If an unsupported browser type is specified.</span>
+<span class="sd">            ValueError: If an unsupported BrowserManager type is specified.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="nf">show_message</span><span class="p">(</span><span class="n">executable_path</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;************************************&#39;</span><span class="p">)</span>
@@ -105,19 +105,19 @@
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;executable_path: &#39;</span><span class="p">,</span> <span class="n">executable_path</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Save this path to avoid reinstalling until it no longer works, then use install for a newer version.&#39;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;************************************&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">browser</span> <span class="o">==</span> <span class="s1">&#39;chrome&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">BrowserManager</span> <span class="o">==</span> <span class="s1">&#39;chrome&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">executable_path</span><span class="p">:</span>
                 <span class="n">executable_path</span> <span class="o">=</span> <span class="n">ChromeDriverManager</span><span class="p">()</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
                 <span class="n">show_message</span><span class="p">(</span><span class="n">executable_path</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">service</span> <span class="o">=</span> <span class="n">ServiceChrome</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">executable_path</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">browser</span> <span class="o">==</span> <span class="s1">&#39;edge&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">BrowserManager</span> <span class="o">==</span> <span class="s1">&#39;edge&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">executable_path</span><span class="p">:</span>
                 <span class="n">executable_path</span> <span class="o">=</span> <span class="n">EdgeChromiumDriverManager</span><span class="p">()</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
                 <span class="n">show_message</span><span class="p">(</span><span class="n">executable_path</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">service</span> <span class="o">=</span> <span class="n">ServiceEdge</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">executable_path</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">browser</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">BrowserManager</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">executable_path</span><span class="p">:</span>
                 <span class="n">executable_path</span> <span class="o">=</span> <span class="n">GeckoDriverManager</span><span class="p">()</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
                 <span class="n">show_message</span><span class="p">(</span><span class="n">executable_path</span><span class="p">)</span>

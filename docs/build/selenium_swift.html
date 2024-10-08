@@ -56,14 +56,14 @@
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-selenium_swift.browser">selenium_swift.browser module</a><ul>
-<li><a class="reference internal" href="#selenium_swift.browser.ChromeBrowser"><code class="docutils literal notranslate"><span class="pre">ChromeBrowser</span></code></a></li>
-<li><a class="reference internal" href="#selenium_swift.browser.EdgeBrowser"><code class="docutils literal notranslate"><span class="pre">EdgeBrowser</span></code></a></li>
-<li><a class="reference internal" href="#selenium_swift.browser.FireFoxBrowser"><code class="docutils literal notranslate"><span class="pre">FireFoxBrowser</span></code></a></li>
-<li><a class="reference internal" href="#selenium_swift.browser.PageScrape"><code class="docutils literal notranslate"><span class="pre">PageScrape</span></code></a><ul>
-<li><a class="reference internal" href="#selenium_swift.browser.PageScrape.crawl"><code class="docutils literal notranslate"><span class="pre">PageScrape.crawl()</span></code></a></li>
-<li><a class="reference internal" href="#selenium_swift.browser.PageScrape.onResponse"><code class="docutils literal notranslate"><span class="pre">PageScrape.onResponse()</span></code></a></li>
-<li><a class="reference internal" href="#selenium_swift.browser.PageScrape.open"><code class="docutils literal notranslate"><span class="pre">PageScrape.open()</span></code></a></li>
+<li><a class="reference internal" href="#module-selenium_swift.BrowserManager">selenium_swift.BrowserManager module</a><ul>
+<li><a class="reference internal" href="#selenium_swift.BrowserManager.ChromeBrowserManager"><code class="docutils literal notranslate"><span class="pre">ChromeBrowserManager</span></code></a></li>
+<li><a class="reference internal" href="#selenium_swift.BrowserManager.EdgeBrowserManager"><code class="docutils literal notranslate"><span class="pre">EdgeBrowserManager</span></code></a></li>
+<li><a class="reference internal" href="#selenium_swift.BrowserManager.FireFoxBrowserManager"><code class="docutils literal notranslate"><span class="pre">FireFoxBrowserManager</span></code></a></li>
+<li><a class="reference internal" href="#selenium_swift.BrowserManager.PageScrape"><code class="docutils literal notranslate"><span class="pre">PageScrape</span></code></a><ul>
+<li><a class="reference internal" href="#selenium_swift.BrowserManager.PageScrape.crawl"><code class="docutils literal notranslate"><span class="pre">PageScrape.crawl()</span></code></a></li>
+<li><a class="reference internal" href="#selenium_swift.BrowserManager.PageScrape.onResponse"><code class="docutils literal notranslate"><span class="pre">PageScrape.onResponse()</span></code></a></li>
+<li><a class="reference internal" href="#selenium_swift.BrowserManager.PageScrape.open"><code class="docutils literal notranslate"><span class="pre">PageScrape.open()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -172,11 +172,11 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#module-selenium_swift.page_event">selenium_swift.page_event module</a><ul>
-<li><a class="reference internal" href="#selenium_swift.page_event.Browser"><code class="docutils literal notranslate"><span class="pre">Browser</span></code></a><ul>
-<li><a class="reference internal" href="#selenium_swift.page_event.Browser.ACTUAL_DRIVER"><code class="docutils literal notranslate"><span class="pre">Browser.ACTUAL_DRIVER</span></code></a></li>
-<li><a class="reference internal" href="#selenium_swift.page_event.Browser.alert"><code class="docutils literal notranslate"><span class="pre">Browser.alert()</span></code></a></li>
-<li><a class="reference internal" href="#selenium_swift.page_event.Browser.get"><code class="docutils literal notranslate"><span class="pre">Browser.get()</span></code></a></li>
-<li><a class="reference internal" href="#selenium_swift.page_event.Browser.startBrowsers"><code class="docutils literal notranslate"><span class="pre">Browser.startBrowsers()</span></code></a></li>
+<li><a class="reference internal" href="#selenium_swift.page_event.BrowserManager"><code class="docutils literal notranslate"><span class="pre">BrowserManager</span></code></a><ul>
+<li><a class="reference internal" href="#selenium_swift.page_event.BrowserManager.ACTUAL_DRIVER"><code class="docutils literal notranslate"><span class="pre">BrowserManager.ACTUAL_DRIVER</span></code></a></li>
+<li><a class="reference internal" href="#selenium_swift.page_event.BrowserManager.alert"><code class="docutils literal notranslate"><span class="pre">BrowserManager.alert()</span></code></a></li>
+<li><a class="reference internal" href="#selenium_swift.page_event.BrowserManager.get"><code class="docutils literal notranslate"><span class="pre">BrowserManager.get()</span></code></a></li>
+<li><a class="reference internal" href="#selenium_swift.page_event.BrowserManager.startBrowserManagers"><code class="docutils literal notranslate"><span class="pre">BrowserManager.startBrowserManagers()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#selenium_swift.page_event.NextPage"><code class="docutils literal notranslate"><span class="pre">NextPage</span></code></a><ul>
@@ -296,21 +296,21 @@
 </dd></dl>
 
 </section>
-<section id="module-selenium_swift.browser">
-<span id="selenium-swift-browser-module"></span><h2>selenium_swift.browser module<a class="headerlink" href="#module-selenium_swift.browser" title="Link to this heading"></a></h2>
+<section id="module-selenium_swift.BrowserManager">
+<span id="selenium-swift-BrowserManager-module"></span><h2>selenium_swift.BrowserManager module<a class="headerlink" href="#module-selenium_swift.BrowserManager" title="Link to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="selenium_swift.browser.ChromeBrowser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.browser.</span></span><span class="sig-name descname"><span class="pre">ChromeBrowser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_option.ChromeOption" title="selenium_swift.web_option.ChromeOption"><span class="pre">ChromeOption</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_service.ChromeService" title="selenium_swift.web_service.ChromeService"><span class="pre">ChromeService</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_alive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isUndetectChromedriver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/browser.html#ChromeBrowser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.browser.ChromeBrowser" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#selenium_swift.page_event.Browser" title="selenium_swift.page_event.Browser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Browser</span></code></a></p>
-<p>A class for managing a Chrome browser instance.</p>
-<p>Inherits from the Browser class and provides initialization for Chrome-specific
+<dt class="sig sig-object py" id="selenium_swift.BrowserManager.ChromeBrowserManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.BrowserManager.</span></span><span class="sig-name descname"><span class="pre">ChromeBrowserManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_option.ChromeOption" title="selenium_swift.web_option.ChromeOption"><span class="pre">ChromeOption</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_service.ChromeService" title="selenium_swift.web_service.ChromeService"><span class="pre">ChromeService</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_alive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isUndetectChromedriver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/BrowserManager.html#ChromeBrowserManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.BrowserManager.ChromeBrowserManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#selenium_swift.page_event.BrowserManager" title="selenium_swift.page_event.BrowserManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrowserManager</span></code></a></p>
+<p>A class for managing a Chrome BrowserManager instance.</p>
+<p>Inherits from the BrowserManager class and provides initialization for Chrome-specific
 options and services.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>option</strong> (<a class="reference internal" href="#selenium_swift.web_option.ChromeOption" title="selenium_swift.web_option.ChromeOption"><em>ChromeOption</em></a>) – The options to configure the Chrome browser.</p></li>
-<li><p><strong>service</strong> (<a class="reference internal" href="#selenium_swift.web_service.ChromeService" title="selenium_swift.web_service.ChromeService"><em>ChromeService</em></a>) – The service to manage the Chrome browser instance.</p></li>
-<li><p><strong>keep_alive</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep the browser session alive (default is False).</p></li>
+<li><p><strong>option</strong> (<a class="reference internal" href="#selenium_swift.web_option.ChromeOption" title="selenium_swift.web_option.ChromeOption"><em>ChromeOption</em></a>) – The options to configure the Chrome BrowserManager.</p></li>
+<li><p><strong>service</strong> (<a class="reference internal" href="#selenium_swift.web_service.ChromeService" title="selenium_swift.web_service.ChromeService"><em>ChromeService</em></a>) – The service to manage the Chrome BrowserManager instance.</p></li>
+<li><p><strong>keep_alive</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep the BrowserManager session alive (default is False).</p></li>
 <li><p><strong>isUndetectChromedriver</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use an undetectable ChromeDriver (default is False).</p></li>
 </ul>
 </dd>
@@ -318,44 +318,44 @@ options and services.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="selenium_swift.browser.EdgeBrowser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.browser.</span></span><span class="sig-name descname"><span class="pre">EdgeBrowser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_option.EdgeOption" title="selenium_swift.web_option.EdgeOption"><span class="pre">EdgeOption</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_service.EdgeService" title="selenium_swift.web_service.EdgeService"><span class="pre">EdgeService</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_alive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/browser.html#EdgeBrowser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.browser.EdgeBrowser" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#selenium_swift.page_event.Browser" title="selenium_swift.page_event.Browser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Browser</span></code></a></p>
-<p>A class for managing an Edge browser instance.</p>
-<p>Inherits from the Browser class and provides initialization for Edge-specific
+<dt class="sig sig-object py" id="selenium_swift.BrowserManager.EdgeBrowserManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.BrowserManager.</span></span><span class="sig-name descname"><span class="pre">EdgeBrowserManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_option.EdgeOption" title="selenium_swift.web_option.EdgeOption"><span class="pre">EdgeOption</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_service.EdgeService" title="selenium_swift.web_service.EdgeService"><span class="pre">EdgeService</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_alive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/BrowserManager.html#EdgeBrowserManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.BrowserManager.EdgeBrowserManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#selenium_swift.page_event.BrowserManager" title="selenium_swift.page_event.BrowserManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrowserManager</span></code></a></p>
+<p>A class for managing an Edge BrowserManager instance.</p>
+<p>Inherits from the BrowserManager class and provides initialization for Edge-specific
 options and services.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>option</strong> (<a class="reference internal" href="#selenium_swift.web_option.EdgeOption" title="selenium_swift.web_option.EdgeOption"><em>EdgeOption</em></a>) – The options to configure the Edge browser.</p></li>
-<li><p><strong>service</strong> (<a class="reference internal" href="#selenium_swift.web_service.EdgeService" title="selenium_swift.web_service.EdgeService"><em>EdgeService</em></a>) – The service to manage the Edge browser instance.</p></li>
-<li><p><strong>keep_alive</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep the browser session alive (default is False).</p></li>
+<li><p><strong>option</strong> (<a class="reference internal" href="#selenium_swift.web_option.EdgeOption" title="selenium_swift.web_option.EdgeOption"><em>EdgeOption</em></a>) – The options to configure the Edge BrowserManager.</p></li>
+<li><p><strong>service</strong> (<a class="reference internal" href="#selenium_swift.web_service.EdgeService" title="selenium_swift.web_service.EdgeService"><em>EdgeService</em></a>) – The service to manage the Edge BrowserManager instance.</p></li>
+<li><p><strong>keep_alive</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep the BrowserManager session alive (default is False).</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="selenium_swift.browser.FireFoxBrowser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.browser.</span></span><span class="sig-name descname"><span class="pre">FireFoxBrowser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_option.FirefoxOption" title="selenium_swift.web_option.FirefoxOption"><span class="pre">FirefoxOption</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_service.FirefoxService" title="selenium_swift.web_service.FirefoxService"><span class="pre">FirefoxService</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_alive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/browser.html#FireFoxBrowser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.browser.FireFoxBrowser" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#selenium_swift.page_event.Browser" title="selenium_swift.page_event.Browser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Browser</span></code></a></p>
-<p>A class for managing a Firefox browser instance.</p>
-<p>Inherits from the Browser class and provides initialization for Firefox-specific
+<dt class="sig sig-object py" id="selenium_swift.BrowserManager.FireFoxBrowserManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.BrowserManager.</span></span><span class="sig-name descname"><span class="pre">FireFoxBrowserManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_option.FirefoxOption" title="selenium_swift.web_option.FirefoxOption"><span class="pre">FirefoxOption</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_service.FirefoxService" title="selenium_swift.web_service.FirefoxService"><span class="pre">FirefoxService</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_alive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/BrowserManager.html#FireFoxBrowserManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.BrowserManager.FireFoxBrowserManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#selenium_swift.page_event.BrowserManager" title="selenium_swift.page_event.BrowserManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrowserManager</span></code></a></p>
+<p>A class for managing a Firefox BrowserManager instance.</p>
+<p>Inherits from the BrowserManager class and provides initialization for Firefox-specific
 options and services.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>option</strong> (<a class="reference internal" href="#selenium_swift.web_option.FirefoxOption" title="selenium_swift.web_option.FirefoxOption"><em>FirefoxOption</em></a>) – The options to configure the Firefox browser.</p></li>
-<li><p><strong>service</strong> (<a class="reference internal" href="#selenium_swift.web_service.FirefoxService" title="selenium_swift.web_service.FirefoxService"><em>FirefoxService</em></a>) – The service to manage the Firefox browser instance.</p></li>
-<li><p><strong>keep_alive</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep the browser session alive (default is False).</p></li>
+<li><p><strong>option</strong> (<a class="reference internal" href="#selenium_swift.web_option.FirefoxOption" title="selenium_swift.web_option.FirefoxOption"><em>FirefoxOption</em></a>) – The options to configure the Firefox BrowserManager.</p></li>
+<li><p><strong>service</strong> (<a class="reference internal" href="#selenium_swift.web_service.FirefoxService" title="selenium_swift.web_service.FirefoxService"><em>FirefoxService</em></a>) – The service to manage the Firefox BrowserManager instance.</p></li>
+<li><p><strong>keep_alive</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep the BrowserManager session alive (default is False).</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="selenium_swift.browser.PageScrape">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.browser.</span></span><span class="sig-name descname"><span class="pre">PageScrape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/browser.html#PageScrape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.browser.PageScrape" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="selenium_swift.BrowserManager.PageScrape">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.BrowserManager.</span></span><span class="sig-name descname"><span class="pre">PageScrape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/BrowserManager.html#PageScrape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.BrowserManager.PageScrape" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#selenium_swift.page_event.PageEvent" title="selenium_swift.page_event.PageEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageEvent</span></code></a></p>
 <p>A class to handle the scraping of web pages.</p>
 <p>Inherits from the PageEvent class to utilize event-driven mechanisms for
@@ -369,29 +369,29 @@ web scraping.</p>
 <dl class="py method">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">crawl(**args):</span></span></dt>
-<dd><p>Initiates the crawling process by opening the browser and handling responses.</p>
+<dd><p>Initiates the crawling process by opening the BrowserManager and handling responses.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">open():</span></span></dt>
-<dd><p>Placeholder method for opening the browser.</p>
+<dd><p>Placeholder method for opening the BrowserManager.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="selenium_swift.browser.PageScrape.crawl">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">crawl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/browser.html#PageScrape.crawl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.browser.PageScrape.crawl" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="selenium_swift.BrowserManager.PageScrape.crawl">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">crawl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/BrowserManager.html#PageScrape.crawl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.BrowserManager.PageScrape.crawl" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="selenium_swift.browser.PageScrape.onResponse">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">onResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">arg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/browser.html#PageScrape.onResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.browser.PageScrape.onResponse" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="selenium_swift.BrowserManager.PageScrape.onResponse">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">onResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">arg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/BrowserManager.html#PageScrape.onResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.BrowserManager.PageScrape.onResponse" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="selenium_swift.browser.PageScrape.open">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/browser.html#PageScrape.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.browser.PageScrape.open" title="Link to this definition"></a></dt>
-<dd><p>Opens the specified URL in a new or existing browser tab.</p>
+<dt class="sig sig-object py" id="selenium_swift.BrowserManager.PageScrape.open">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/BrowserManager.html#PageScrape.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.BrowserManager.PageScrape.open" title="Link to this definition"></a></dt>
+<dd><p>Opens the specified URL in a new or existing BrowserManager tab.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>in</strong> (<em>Literal</em><em>[</em><em>'new-tab'</em><em>, </em><em>'this-tab'</em><em>]</em>) – The tab type to open the URL in.</p>
@@ -1413,18 +1413,18 @@ such as moving the mouse, clicking, and dragging.</p>
 <section id="module-selenium_swift.page_event">
 <span id="selenium-swift-page-event-module"></span><h2>selenium_swift.page_event module<a class="headerlink" href="#module-selenium_swift.page_event" title="Link to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="selenium_swift.page_event.Browser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.page_event.</span></span><span class="sig-name descname"><span class="pre">Browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_WebOption</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_service.WebService" title="selenium_swift.web_service.WebService"><span class="pre">WebService</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_alive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isUndetectChromedriver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/page_event.html#Browser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.page_event.Browser" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="selenium_swift.page_event.BrowserManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.page_event.</span></span><span class="sig-name descname"><span class="pre">BrowserManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_WebOption</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selenium_swift.web_service.WebService" title="selenium_swift.web_service.WebService"><span class="pre">WebService</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_alive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isUndetectChromedriver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/page_event.html#BrowserManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.page_event.BrowserManager" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="selenium_swift.page_event.Browser.ACTUAL_DRIVER">
-<span class="sig-name descname"><span class="pre">ACTUAL_DRIVER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#selenium_swift.page_event.Browser.ACTUAL_DRIVER" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="selenium_swift.page_event.BrowserManager.ACTUAL_DRIVER">
+<span class="sig-name descname"><span class="pre">ACTUAL_DRIVER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#selenium_swift.page_event.BrowserManager.ACTUAL_DRIVER" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="selenium_swift.page_event.Browser.alert">
-<span class="sig-name descname"><span class="pre">alert</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/page_event.html#Browser.alert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.page_event.Browser.alert" title="Link to this definition"></a></dt>
-<dd><p>Returns an AlertHandler for handling browser alerts.</p>
+<dt class="sig sig-object py" id="selenium_swift.page_event.BrowserManager.alert">
+<span class="sig-name descname"><span class="pre">alert</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/page_event.html#BrowserManager.alert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.page_event.BrowserManager.alert" title="Link to this definition"></a></dt>
+<dd><p>Returns an AlertHandler for handling BrowserManager alerts.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>An instance of AlertHandler.</p>
@@ -1436,9 +1436,9 @@ such as moving the mouse, clicking, and dragging.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="selenium_swift.page_event.Browser.get">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'new-tab'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'this-tab'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'this-tab'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#selenium_swift.page_event.PageEvent" title="selenium_swift.page_event.PageEvent"><span class="pre">PageEvent</span></a></span></span><a class="reference internal" href="_modules/selenium_swift/page_event.html#Browser.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.page_event.Browser.get" title="Link to this definition"></a></dt>
-<dd><p>Opens a specified URL in a new or existing browser tab.</p>
+<dt class="sig sig-object py" id="selenium_swift.page_event.BrowserManager.get">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'new-tab'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'this-tab'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'this-tab'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#selenium_swift.page_event.PageEvent" title="selenium_swift.page_event.PageEvent"><span class="pre">PageEvent</span></a></span></span><a class="reference internal" href="_modules/selenium_swift/page_event.html#BrowserManager.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.page_event.BrowserManager.get" title="Link to this definition"></a></dt>
+<dd><p>Opens a specified URL in a new or existing BrowserManager tab.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1456,12 +1456,12 @@ such as moving the mouse, clicking, and dragging.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="selenium_swift.page_event.Browser.startBrowsers">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">startBrowsers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">browsers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#selenium_swift.page_event.Browser" title="selenium_swift.page_event.Browser"><span class="pre">Browser</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/page_event.html#Browser.startBrowsers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.page_event.Browser.startBrowsers" title="Link to this definition"></a></dt>
-<dd><p>Starts multiple browser instances concurrently.</p>
+<dt class="sig sig-object py" id="selenium_swift.page_event.BrowserManager.startBrowserManagers">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">startBrowserManagers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">BrowserManagers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#selenium_swift.page_event.BrowserManager" title="selenium_swift.page_event.BrowserManager"><span class="pre">BrowserManager</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/page_event.html#BrowserManager.startBrowserManagers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.page_event.BrowserManager.startBrowserManagers" title="Link to this definition"></a></dt>
+<dd><p>Starts multiple BrowserManager instances concurrently.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>browsers</strong> (<em>list</em><em>[</em><em>'Browser'</em><em>]</em>) – A list of Browser instances to start.</p>
+<dd class="field-odd"><p><strong>BrowserManagers</strong> (<em>list</em><em>[</em><em>'BrowserManager'</em><em>]</em>) – A list of BrowserManager instances to start.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1475,7 +1475,7 @@ such as moving the mouse, clicking, and dragging.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="selenium_swift.page_event.NextPage.open">
 <span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/page_event.html#NextPage.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.page_event.NextPage.open" title="Link to this definition"></a></dt>
-<dd><p>Opens the specified URL in a new or existing browser tab.</p>
+<dd><p>Opens the specified URL in a new or existing BrowserManager tab.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>in</strong> (<em>Literal</em><em>[</em><em>'new-tab'</em><em>, </em><em>'this-tab'</em><em>]</em>) – The tab type to open the URL in.</p>
@@ -1630,7 +1630,7 @@ such as moving the mouse, clicking, and dragging.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="selenium_swift.page_event.PageEvent.open">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'new-tab'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'this-tab'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'this-tab'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/page_event.html#PageEvent.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.page_event.PageEvent.open" title="Link to this definition"></a></dt>
-<dd><p>Opens the specified URL in a new or existing browser tab.</p>
+<dd><p>Opens the specified URL in a new or existing BrowserManager tab.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>in</strong> (<em>Literal</em><em>[</em><em>'new-tab'</em><em>, </em><em>'this-tab'</em><em>]</em>) – The tab type to open the URL in.</p>
@@ -1872,7 +1872,7 @@ such as moving the mouse, clicking, and dragging.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="selenium_swift.web_service.WebService">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.web_service.</span></span><span class="sig-name descname"><span class="pre">WebService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">browser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'chrome'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'edge'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'firefox'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'chrome'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executable_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/web_service.html#WebService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.web_service.WebService" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selenium_swift.web_service.</span></span><span class="sig-name descname"><span class="pre">WebService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">BrowserManager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'chrome'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'edge'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'firefox'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'chrome'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executable_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selenium_swift/web_service.html#WebService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selenium_swift.web_service.WebService" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 

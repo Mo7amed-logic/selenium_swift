@@ -15,17 +15,17 @@ from webdriver_manager.firefox import GeckoDriverManager
 from typing import Literal
 
 class WebService:
-    def __init__(self, browser: Literal['chrome', 'edge', 'firefox'] = 'chrome', executable_path=None) -> None:
+    def __init__(self, BrowserManager: Literal['chrome', 'edge', 'firefox'] = 'chrome', executable_path=None) -> None:
         """
-        Initialize WebService for the specified browser.
+        Initialize WebService for the specified BrowserManager.
 
         Args:
-            browser: The browser type ('chrome', 'edge', 'firefox').
-            executable_path: The path to the browser driver executable. 
+            BrowserManager: The BrowserManager type ('chrome', 'edge', 'firefox').
+            executable_path: The path to the BrowserManager driver executable. 
                 If not provided, WebDriverManager installs the driver automatically.
 
         Raises:
-            ValueError: If an unsupported browser type is specified.
+            ValueError: If an unsupported BrowserManager type is specified.
         """
         def show_message(executable_path):
             print('************************************')
@@ -33,19 +33,19 @@ class WebService:
             print('executable_path: ', executable_path)
             print('Save this path to avoid reinstalling until it no longer works, then use install for a newer version.')
             print('************************************')
-        if browser == 'chrome':
+        if BrowserManager == 'chrome':
             if not executable_path:
                 executable_path = ChromeDriverManager().install()
                 show_message(executable_path)
             self.service = ServiceChrome(executable_path=executable_path)
 
-        if browser == 'edge':
+        if BrowserManager == 'edge':
             if not executable_path:
                 executable_path = EdgeChromiumDriverManager().install()
                 show_message(executable_path)
             self.service = ServiceEdge(executable_path=executable_path)
 
-        if browser == 'firefox':
+        if BrowserManager == 'firefox':
             if not executable_path:
                 executable_path = GeckoDriverManager().install()
                 show_message(executable_path)

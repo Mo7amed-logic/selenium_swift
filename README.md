@@ -13,7 +13,7 @@
 
 - **Flexible WebDriver Options:** Configure WebDriver settings with the `WebOption` class, including headless mode, proxy settings, and custom profiles. Tailor your WebDriver to suit specific scraping needs.
 
-- **Automatic Driver Management:** The `WebService` class handles WebDriver installations for Chrome, Firefox, and Edge browsers, leveraging `webdriver-manager` for seamless driver management.
+- **Automatic Driver Management:** The `WebService` class handles WebDriver installations for Chrome, Firefox, and Edge BrowserManagers, leveraging `webdriver-manager` for seamless driver management.
 
 - **Asynchronous and Synchronous Support:** Choose between async programming with `asyncio` or traditional synchronous methods to optimize performance and flexibility.
 
@@ -30,13 +30,13 @@ pip install selenium-swift
 
 ### Example 1:
 #### Explanation
-This example demonstrates how to handle interactions with pages that open as a result of an event (such as a click or key press) using a custom browser class built on top of `ChromeBrowser`. The code showcases how to find elements on a page, trigger events to open new pages, and interact with the newly opened pages asynchronously.
+This example demonstrates how to handle interactions with pages that open as a result of an event (such as a click or key press) using a custom BrowserManager class built on top of `ChromeBrowserManager`. The code showcases how to find elements on a page, trigger events to open new pages, and interact with the newly opened pages asynchronously.
 
 ##### Key Concepts:
 
-1. **Browser Class:** We define a class `MyBrowser` that extends from `ChromeBrowser` to customize browser behavior.
+1. **BrowserManager Class:** We define a class `MyBrowserManager` that extends from `ChromeBrowserManager` to customize BrowserManager behavior.
 
-2. **Async Tab Method:** Methods that interact with browser tabs should be named with a `tab` prefix, which the framework recognizes as a tab interaction.
+2. **Async Tab Method:** Methods that interact with BrowserManager tabs should be named with a `tab` prefix, which the framework recognizes as a tab interaction.
 
 3. **Page Navigation:** The example shows how to load a page, find specific elements (in this case, product thumbnails), and handle page transitions when an event (like a click) triggers the opening of a new page.
 
@@ -45,17 +45,17 @@ This example demonstrates how to handle interactions with pages that open as a r
 #### Example Code 
 
 ```python
-from selenium_swift.browser import * 
+from selenium_swift.BrowserManager import * 
 
-class MyBrowser(ChromeBrowser):
+class MyBrowserManager(ChromeBrowserManager):
     """
-    MyBrowser extends ChromeBrowser to define custom interactions with web pages.
+    MyBrowserManager extends ChromeBrowserManager to define custom interactions with web pages.
     This class demonstrates how to interact with elements on a page and handle events
-    that open new browser tabs or windows.
+    that open new BrowserManager tabs or windows.
     """
     
     def __init__(self) -> None:
-        # Initialize the browser with Chrome-specific options and service
+        # Initialize the BrowserManager with Chrome-specific options and service
         super().__init__(ChromeOption(), ChromeService())
     
     async def tab_1(self):
@@ -87,13 +87,13 @@ class MyBrowser(ChromeBrowser):
                 print(row.text)
     
 if __name__ == "__main__":
-    # Start the browser with an instance of MyBrowser
-    Browser.startBrowsers([MyBrowser()])
+    # Start the BrowserManager with an instance of MyBrowserManager
+    BrowserManager.startBrowserManagers([MyBrowserManager()])
 ```
 
 #### Breakdown of the Code
-1. `MyBrowser` Class: This class inherits from `ChromeBrowser`. Inside, we define the `tab_1` method to represent interactions on the first tab on window opened by the browser.
-    - The `super().__init__(ChromeOption(), ChromeService()) `ensures that the browser is initialized with default Chrome options and services.
+1. `MyBrowserManager` Class: This class inherits from `ChromeBrowserManager`. Inside, we define the `tab_1` method to represent interactions on the first tab on window opened by the BrowserManager.
+    - The `super().__init__(ChromeOption(), ChromeService()) `ensures that the BrowserManager is initialized with default Chrome options and services.
 
 2. `tab_1` Method:
     - This method loads the page `https://books.toscrape.com/.`
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     - Once the new page is opened, the script switches focus to that page using `focus_to_new_page().`
     - It then locates a table of data on the new page using a CSS selector, iterates through the rows, and prints the content of each row.
 
-3. Browser Startup: The `if __name__ == "__main__":` block ensures that the script runs the browser when executed. It calls `Browser.startBrowsers([MyBrowser()])` to start the browser and execute the interactions defined in `tab_1`.
+3. BrowserManager Startup: The `if __name__ == "__main__":` block ensures that the script runs the BrowserManager when executed. It calls `BrowserManager.startBrowserManagers([MyBrowserManager()])` to start the BrowserManager and execute the interactions defined in `tab_1`.
 
 #### Key Considerations
 - **Async Interactions:** The example utilizes async programming to handle potentially slow operations (like loading a page or finding elements) without blocking the main thread.
@@ -125,7 +125,7 @@ This example demonstrates how to interact with new pages opened by an event (e.g
 
 ### Example Code 
 ```python 
-from selenium_swift.browser import *  # Import base browser classes
+from selenium_swift.BrowserManager import *  # Import base BrowserManager classes
 from selenium_swift.web_option import ChromeOption  # Import Chrome options
 from selenium_swift.web_service import ChromeService  # Import Chrome services
 
@@ -151,14 +151,14 @@ class PageInfo(NextPage):
         for row in table_rows:
             print(row.text)
 
-class MyBrowser(ChromeBrowser):
+class MyBrowserManager(ChromeBrowserManager):
     """
-    MyBrowser is a custom browser class that extends ChromeBrowser.
+    MyBrowserManager is a custom BrowserManager class that extends ChromeBrowserManager.
     It contains methods to interact with the main page and handle navigation
     to new pages.
     """
     def __init__(self) -> None:
-        # Initialize ChromeBrowser with default Chrome options and services
+        # Initialize ChromeBrowserManager with default Chrome options and services
         super().__init__(ChromeOption(), ChromeService())
 
     async def tab_1(self):
@@ -183,8 +183,8 @@ class MyBrowser(ChromeBrowser):
             await PageInfo().showData()
 
 if __name__ == "__main__":
-    # Start the browser with an instance of MyBrowser and open the first tab
-    Browser.startBrowsers([MyBrowser()])
+    # Start the BrowserManager with an instance of MyBrowserManager and open the first tab
+    BrowserManager.startBrowserManagers([MyBrowserManager()])
 
 ```
 ### Breakdown of the Code
@@ -192,13 +192,13 @@ if __name__ == "__main__":
     - This class extends `NextPage`, which is designed to represent a page that opens as a result of an interaction (like clicking on an element).
     - The method `showData` asynchronously finds table rows using a CSS selector and prints the content of each row.
 
-2. **`MyBrowser` Class:**
-    - This class extends `ChromeBrowser` and defines the `tab_1` method for interactions on the main page.
+2. **`MyBrowserManager` Class:**
+    - This class extends `ChromeBrowserManager` and defines the `tab_1` method for interactions on the main page.
     - It opens the main page (`https://books.toscrape.com/`) and locates all product elements using the `.thumbnail` CSS selector.
     - When a product is clicked, a new page opens. Instead of focusing directly on the new page, an instance of `PageInfo` is created, and the `showData` method is called to interact with the new page.
 
-3. **Browser Flow:**
-    - The browser starts by opening the main page, where it finds and clicks on product elements.
+3. **BrowserManager Flow:**
+    - The BrowserManager starts by opening the main page, where it finds and clicks on product elements.
     - Each click opens a new page, which is handled by `PageInfo.` This class abstracts the interaction with the newly opened page, making the code cleaner and more modular.
 
 4. **Object-Oriented Design:**
@@ -212,12 +212,12 @@ This example shows how to use `selenium_swift` to scrape a web page. Follow thes
 
 1. Create your own `Scrap` class that extends from the `PageScrape` 
 class and contains the `async def onResponse` method that includes your **arg**.
-2. Create a `MyBrowser` class that extends from `ChromeBrowser`, `FirefoxBrowser`, or `EdgeBrowser`.
-Here, I use `ChromeBrowser`. You should create async methods that begin with "tab", e.g.,
-`tab_1`, `tab_2`, etc. Each tab method will open a tab in your browser.
+2. Create a `MyBrowserManager` class that extends from `ChromeBrowserManager`, `FirefoxBrowserManager`, or `EdgeBrowserManager`.
+Here, I use `ChromeBrowserManager`. You should create async methods that begin with "tab", e.g.,
+`tab_1`, `tab_2`, etc. Each tab method will open a tab in your BrowserManager.
 
 ```python
-from selenium_swift.browser import * 
+from selenium_swift.BrowserManager import * 
 
 class Scrap(PageScrape):
     async def onResponse(self, **arg):
@@ -225,7 +225,7 @@ class Scrap(PageScrape):
         for quote in quote_elements:
             print(quote.text)
 
-class MyBrowser(ChromeBrowser):
+class MyBrowserManager(ChromeBrowserManager):
     def __init__(self) -> None:
         super().__init__(ChromeOption(), ChromeService())
 
@@ -246,19 +246,19 @@ class MyBrowser(ChromeBrowser):
             await Scrap(f'https://quotes.toscrape.com/page/{i}/').crawl(my_index=i)
 
 if __name__ == "__main__":
-    Browser.startBrowsers([MyBrowser()])
+    BrowserManager.startBrowserManagers([MyBrowserManager()])
 ```
 
 ### Example 4: Concurrent File Upload and Download
-This example demonstrates how to concurrently upload and download files using the `selenium_swift` package with a custom browser class. 
+This example demonstrates how to concurrently upload and download files using the `selenium_swift` package with a custom BrowserManager class. 
 
-#### Step 1: Create the MyBrowser Class
-In this step, we will create a class named `MyBrowser` for example , which extends from the `ChromeBrowser` class. This class will contain two asynchronous methods: `tab_download` and `tab_upload`. Each method will handle a specific functionality—downloading files and uploading files—by opening separate tabs in the browser.
+#### Step 1: Create the MyBrowserManager Class
+In this step, we will create a class named `MyBrowserManager` for example , which extends from the `ChromeBrowserManager` class. This class will contain two asynchronous methods: `tab_download` and `tab_upload`. Each method will handle a specific functionality—downloading files and uploading files—by opening separate tabs in the BrowserManager.
 
 ```python
-from selenium_swift.browser import *
+from selenium_swift.BrowserManager import *
 
-class MyBrowser(ChromeBrowser):
+class MyBrowserManager(ChromeBrowserManager):
     def __init__(self) -> None:
         # Set the download directory
         self.path_download = r"c:\Users\progr\OneDrive\Bureau\test_download"
@@ -287,7 +287,7 @@ The `tab_download` method will navigate to a page that contains downloadable fil
 ```
 - **File Download Logic:** The method retrieves all links on the page and checks if they end with the `.pdf` extension. If so, it clicks the link to start the download.
 
-- **Waiting for Downloads:** The await `page.wait_for_Download(self.path_download)` statement ensures that the method waits until the download is completed before browser close all the tabs. 
+- **Waiting for Downloads:** The await `page.wait_for_Download(self.path_download)` statement ensures that the method waits until the download is completed before BrowserManager close all the tabs. 
 
 #### Step 3: Implement the `tab_upload` Method
 The `tab_upload` method will navigate to a file upload page, locate the file input element, and upload a specified file.
@@ -309,20 +309,20 @@ The `tab_upload` method will navigate to a file upload page, locate the file inp
 - **File Upload Logic:** The method retrieves the file input element by its ID and uses the `send_file` method to upload a specified file from the local system.
 - **Sleep Function:** The `await page.sleep(3)` statement pauses the execution for 3 seconds, allowing time for the file upload to complete. It’s important to use `page.sleep()` instead of time.sleep() in asynchronous code. Using `time.sleep()` will block the entire event loop, preventing other asynchronous tasks from running, which can lead to unresponsive behavior in your application. By using `await page.sleep()`, the event loop remains active, allowing other tasks to be executed concurrently while waiting.
 
-#### Step 4: Running the Browser
-Finally, we will execute the `MyBrowser` class to start the browser and perform the file upload and download tasks concurrently.
+#### Step 4: Running the BrowserManager
+Finally, we will execute the `MyBrowserManager` class to start the BrowserManager and perform the file upload and download tasks concurrently.
 
 ```python
 if __name__ == "__main__":
-    Browser.startBrowsers([MyBrowser()])
+    BrowserManager.startBrowserManagers([MyBrowserManager()])
 
 ```
 ### Summary 
-This example showcases how to create a custom browser class using `selenium_swift` for handling file uploads and downloads. By organizing the functionality into methods, you can easily maintain and extend the capabilities of your web scraping tasks.
+This example showcases how to create a custom BrowserManager class using `selenium_swift` for handling file uploads and downloads. By organizing the functionality into methods, you can easily maintain and extend the capabilities of your web scraping tasks.
 ```python
-from selenium_swift.browser import *
+from selenium_swift.BrowserManager import *
 
-class MyBrowser(ChromeBrowser):
+class MyBrowserManager(ChromeBrowserManager):
     def __init__(self) -> None:
         # Set the download directory
         self.path_download = r"c:\Users\progr\OneDrive\Bureau\test_download"
@@ -364,7 +364,7 @@ You can create custom page classes to manage complex interactions, such as click
 
 #### Implementation
 ```python
-from selenium_swift.browser import *
+from selenium_swift.BrowserManager import *
 
 # Define the PageDownload class to handle file downloads
 class PageDownload(PageEvent):
@@ -405,8 +405,8 @@ class PageUpload(PageEvent):
         input_file = await self.find_element('id', "file-upload")
         input_file.send_file(text_file_path)
 
-# Define the MyBrowser1 class to manage download and upload actions
-class MyBrowser1(ChromeBrowser):
+# Define the MyBrowserManager1 class to manage download and upload actions
+class MyBrowserManager1(ChromeBrowserManager):
     def __init__(self) -> None:
         self.path_download = r"c:\Users\progr\OneDrive\Bureau\test_download"
         option = ChromeOption('download.default_directory=' + self.path_download)
@@ -426,9 +426,9 @@ class MyBrowser1(ChromeBrowser):
         await page_upload.upload_text_file(r'd:\ascii.txt')
         await page_upload.sleep(3)
 
-# Start the browser and run the download and upload tasks
+# Start the BrowserManager and run the download and upload tasks
 if __name__ == "__main__":
-    Browser.startBrowsers([MyBrowser1()])
+    BrowserManager.startBrowserManagers([MyBrowserManager1()])
 ```
 
 #### Explanation
@@ -441,8 +441,8 @@ if __name__ == "__main__":
         - `upload_image(image_path)`: Uploads an image file.
         - `upload_pdf(pdf_path)`: Uploads a PDF file.
         - `upload_text_file(text_file_path)`: Uploads a text file.
-2. **MyBrowser1 Class:**
-    - This class extends `ChromeBrowser` and manages two separate tabs for downloading and uploading files. The methods prefixed with `tab_` signal to the browser that they will open a new tab.
+2. **MyBrowserManager1 Class:**
+    - This class extends `ChromeBrowserManager` and manages two separate tabs for downloading and uploading files. The methods prefixed with `tab_` signal to the BrowserManager that they will open a new tab.
     - `tab_download()`: Opens the download page and executes methods to download various file types, followed by waiting for the download to complete.
     - `tab_upload()`: Opens the upload page and executes methods to upload specified files. The sleep method is called to pause execution for a brief period, allowing the upload to complete.
 

@@ -1,4 +1,4 @@
-from selenium_swift.browser import * 
+from selenium_swift.BrowserManager import * 
 
 # this example show you how to create custom page that should extend from PageEvent class 
 # here i have a web page that i want to download some files from it so i creat this page separetly and i name it PageDownload
@@ -38,11 +38,11 @@ class PageUpload(PageEvent):
         input_file.send_file(text_file_path)
 
 
-# this my browser i name it "MyBrowser1" extend fro ChromeBrowser and this browser contains 2
+# this my BrowserManager i name it "MyBrowserManager1" extend fro ChromeBrowserManager and this BrowserManager contains 2
 # one handle for download i name it "tab_download" and other i name it "tab_upload" for upload
-# and as you can see the name of async method that handles page should be begin with "tab" so browser know that 
+# and as you can see the name of async method that handles page should be begin with "tab" so BrowserManager know that 
 # this will open a tab 
-class MyBrowser1(ChromeBrowser):
+class MyBrowserManager1(ChromeBrowserManager):
     def __init__(self) -> None:
         self.path_download = r"c:\Users\progr\OneDrive\Bureau\test_download"
         option = ChromeOption('download.default_directory='+self.path_download)
@@ -61,4 +61,4 @@ class MyBrowser1(ChromeBrowser):
         await page_upload.sleep(3)
 
 if __name__ == "__main__":
-    Browser.startBrowsers([MyBrowser1()])
+    BrowserManager.startBrowserManagers([MyBrowserManager1()])

@@ -10,7 +10,7 @@ import asyncio
 from typing import Literal
 from time import sleep
 import re
-_BY = Literal['css_selector','id','class','name','link_text','partial_link_text','tag_name']
+_BY = Literal['css_selector','id','xpath','class','name','link_text','partial_link_text','tag_name']
 
 class _ElementHandler:
     @staticmethod

@@ -99,10 +99,10 @@ jQuery.fn.highlightText = function(text, className) {
 };
 
 /*
- * backward compatibility for jQuery.browser
+ * backward compatibility for jQuery.BrowserManager
  * This will be supported until firefox bug is fixed.
  */
-if (!jQuery.browser) {
+if (!jQuery.BrowserManager) {
     jQuery.uaMatch = function(ua) {
         ua = ua.toLowerCase();
 
@@ -114,10 +114,10 @@ if (!jQuery.browser) {
             [];
 
         return {
-            browser: match[ 1 ] || "",
+            BrowserManager: match[ 1 ] || "",
             version: match[ 2 ] || "0"
         };
     };
-    jQuery.browser = {};
-    jQuery.browser[jQuery.uaMatch(navigator.userAgent).browser] = true;
+    jQuery.BrowserManager = {};
+    jQuery.BrowserManager[jQuery.uaMatch(navigator.userAgent).BrowserManager] = true;
 }

@@ -116,56 +116,56 @@
 <span class="k">def</span> <span class="nf">are_urls_equal</span><span class="p">(</span><span class="n">url1</span><span class="p">,</span> <span class="n">url2</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">normalize_url</span><span class="p">(</span><span class="n">url1</span><span class="p">)</span> <span class="o">==</span> <span class="n">normalize_url</span><span class="p">(</span><span class="n">url2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Browser">
-<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.page_event.Browser">[docs]</a>
-<span class="k">class</span> <span class="nc">Browser</span><span class="p">:</span>
+<div class="viewcode-block" id="BrowserManager">
+<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.page_event.BrowserManager">[docs]</a>
+<span class="k">class</span> <span class="nc">BrowserManager</span><span class="p">:</span>
     <span class="n">ACTUAL_DRIVER</span><span class="o">=</span> <span class="kc">None</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">option</span><span class="p">:</span><span class="n">_WebOption</span><span class="p">,</span><span class="n">service</span><span class="p">:</span><span class="n">WebService</span><span class="p">,</span><span class="n">keep_alive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">isUndetectChromedriver</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">def</span> <span class="nf">__getDriver</span><span class="p">(</span><span class="n">options</span><span class="p">:</span><span class="n">_WebOption</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">service</span><span class="p">:</span> <span class="n">WebService</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">keep_alive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span><span class="n">isUndetectChromedriver</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-            <span class="n">browser</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">browser</span>
+            <span class="n">BrowserManager</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">BrowserManager</span>
             <span class="n">options</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">options</span> <span class="k">if</span> <span class="n">options</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">service</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">service</span> <span class="k">if</span> <span class="n">service</span> <span class="k">else</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="n">browser</span> <span class="o">==</span> <span class="s2">&quot;chrome&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">BrowserManager</span> <span class="o">==</span> <span class="s2">&quot;chrome&quot;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">isUndetectChromedriver</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">uc</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span><span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span> <span class="n">keep_alive</span><span class="o">=</span><span class="n">keep_alive</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">Chrome</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">service</span><span class="p">,</span> <span class="n">keep_alive</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">browser</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">BrowserManager</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">Firefox</span><span class="p">(</span><span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">browser</span> <span class="o">==</span> <span class="s1">&#39;edge&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">BrowserManager</span> <span class="o">==</span> <span class="s1">&#39;edge&#39;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">Edge</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span><span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">)</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span> <span class="o">=</span> <span class="n">__getDriver</span><span class="p">(</span><span class="n">option</span><span class="p">,</span><span class="n">service</span><span class="p">,</span><span class="n">keep_alive</span><span class="p">,</span><span class="n">isUndetectChromedriver</span><span class="p">)</span>
     
-<div class="viewcode-block" id="Browser.startBrowsers">
-<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.page_event.Browser.startBrowsers">[docs]</a>
+<div class="viewcode-block" id="BrowserManager.startBrowserManagers">
+<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.page_event.BrowserManager.startBrowserManagers">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">startBrowsers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="n">browsers</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="s1">&#39;Browser&#39;</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">startBrowserManagers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="n">BrowserManagers</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="s1">&#39;BrowserManager&#39;</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Starts multiple browser instances concurrently.</span>
+<span class="sd">        Starts multiple BrowserManager instances concurrently.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            browsers (list[&#39;Browser&#39;]): A list of Browser instances to start.</span>
+<span class="sd">            BrowserManagers (list[&#39;BrowserManager&#39;]): A list of BrowserManager instances to start.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">async</span> <span class="k">def</span> <span class="nf">__main</span><span class="p">(</span><span class="n">browser</span><span class="p">:</span><span class="s1">&#39;Browser&#39;</span><span class="p">,</span><span class="n">task</span><span class="p">:</span><span class="s1">&#39;PageEvent&#39;</span><span class="p">,</span><span class="n">is_new_tab</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">__main</span><span class="p">(</span><span class="n">BrowserManager</span><span class="p">:</span><span class="s1">&#39;BrowserManager&#39;</span><span class="p">,</span><span class="n">task</span><span class="p">:</span><span class="s1">&#39;PageEvent&#39;</span><span class="p">,</span><span class="n">is_new_tab</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">is_new_tab</span><span class="p">:</span>
-                <span class="n">browser</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">switch_to</span><span class="o">.</span><span class="n">new_window</span><span class="p">(</span><span class="s1">&#39;tab&#39;</span><span class="p">)</span>
-            <span class="n">browser</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">isOpen</span> <span class="o">=</span> <span class="kc">False</span> 
-            <span class="bp">cls</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">_driver</span>
+                <span class="n">BrowserManager</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">switch_to</span><span class="o">.</span><span class="n">new_window</span><span class="p">(</span><span class="s1">&#39;tab&#39;</span><span class="p">)</span>
+            <span class="n">BrowserManager</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">isOpen</span> <span class="o">=</span> <span class="kc">False</span> 
+            <span class="bp">cls</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span> <span class="o">=</span> <span class="n">BrowserManager</span><span class="o">.</span><span class="n">_driver</span>
             <span class="k">await</span> <span class="n">task</span><span class="p">()</span>
-        <span class="k">async</span> <span class="k">def</span> <span class="nf">gen_main</span><span class="p">(</span><span class="n">browser</span><span class="p">:</span><span class="n">Browser</span><span class="p">):</span>
-            <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">browser</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">browser</span><span class="p">)</span> <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">browser</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span> <span class="ow">and</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;tab&#39;</span><span class="p">)]</span>
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">gen_main</span><span class="p">(</span><span class="n">BrowserManager</span><span class="p">:</span><span class="n">BrowserManager</span><span class="p">):</span>
+            <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">BrowserManager</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">BrowserManager</span><span class="p">)</span> <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">BrowserManager</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span> <span class="ow">and</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;tab&#39;</span><span class="p">)]</span>
             <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="n">method</span> <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span> <span class="k">if</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">iscoroutinefunction</span><span class="p">(</span><span class="n">method</span><span class="p">)]</span>
              
-            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">__main</span><span class="p">(</span><span class="n">browser</span><span class="p">,</span><span class="n">methods</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">is_new_tab</span> <span class="o">=</span> <span class="n">i</span> <span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">methods</span><span class="p">))))</span>
-            <span class="n">browser</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">__main</span><span class="p">(</span><span class="n">BrowserManager</span><span class="p">,</span><span class="n">methods</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">is_new_tab</span> <span class="o">=</span> <span class="n">i</span> <span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">methods</span><span class="p">))))</span>
+            <span class="n">BrowserManager</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
         <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">gen_main</span><span class="p">(</span><span class="n">browser</span><span class="p">)</span> <span class="k">for</span> <span class="n">browser</span> <span class="ow">in</span> <span class="n">browsers</span><span class="p">))</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">gen_main</span><span class="p">(</span><span class="n">BrowserManager</span><span class="p">)</span> <span class="k">for</span> <span class="n">BrowserManager</span> <span class="ow">in</span> <span class="n">BrowserManagers</span><span class="p">))</span>
         <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>  </div>
 
-<div class="viewcode-block" id="Browser.get">
-<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.page_event.Browser.get">[docs]</a>
+<div class="viewcode-block" id="BrowserManager.get">
+<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.page_event.BrowserManager.get">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">url</span><span class="p">,</span><span class="n">in_</span><span class="p">:</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;new-tab&#39;</span><span class="p">,</span><span class="s1">&#39;this-tab&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;this-tab&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="s1">&#39;PageEvent&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Opens a specified URL in a new or existing browser tab.</span>
+<span class="sd">        Opens a specified URL in a new or existing BrowserManager tab.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            url (str): The URL to open.</span>
@@ -176,11 +176,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="n">PageEvent</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">in_</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Browser.alert">
-<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.page_event.Browser.alert">[docs]</a>
+<div class="viewcode-block" id="BrowserManager.alert">
+<a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.page_event.BrowserManager.alert">[docs]</a>
     <span class="k">def</span> <span class="nf">alert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns an AlertHandler for handling browser alerts.</span>
+<span class="sd">        Returns an AlertHandler for handling BrowserManager alerts.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            AlertHandler: An instance of AlertHandler.</span>
@@ -231,7 +231,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">AlertHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">AlertHandler</span><span class="p">(</span><span class="n">Browser</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">AlertHandler</span><span class="p">(</span><span class="n">BrowserManager</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span><span class="p">)</span></div>
 
         
 <div class="viewcode-block" id="PageEvent.wait_for_Download">
@@ -277,7 +277,7 @@
 <a class="viewcode-back" href="../../selenium_swift.html#selenium_swift.page_event.PageEvent.open">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">in_</span><span class="p">:</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;new-tab&#39;</span><span class="p">,</span><span class="s1">&#39;this-tab&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;this-tab&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Opens the specified URL in a new or existing browser tab.</span>
+<span class="sd">        Opens the specified URL in a new or existing BrowserManager tab.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            in_ (Literal[&#39;new-tab&#39;, &#39;this-tab&#39;]): The tab type to open the URL in.</span>
@@ -285,10 +285,10 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            PageEvent: The current PageEvent instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">Browser</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span>
-        <span class="k">if</span> <span class="n">in_</span> <span class="o">==</span> <span class="s1">&#39;new-tab&#39;</span> <span class="ow">and</span> <span class="n">Browser</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span><span class="o">.</span><span class="n">isOpen</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">BrowserManager</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span>
+        <span class="k">if</span> <span class="n">in_</span> <span class="o">==</span> <span class="s1">&#39;new-tab&#39;</span> <span class="ow">and</span> <span class="n">BrowserManager</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span><span class="o">.</span><span class="n">isOpen</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to</span><span class="o">.</span><span class="n">new_window</span><span class="p">(</span><span class="n">in_</span><span class="p">)</span>
-        <span class="n">Browser</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span><span class="o">.</span><span class="n">isOpen</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">BrowserManager</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span><span class="o">.</span><span class="n">isOpen</span><span class="o">=</span><span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_focus</span><span class="p">()</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -336,7 +336,7 @@
             <span class="n">PageEvent</span><span class="o">.</span><span class="n">__ACTUAL_PAGE_INDEX</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__page_index</span>
             
             <span class="n">tab</span><span class="p">[</span><span class="s1">&#39;actual_index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__page_index</span>    
-        <span class="n">Browser</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span>
+        <span class="n">BrowserManager</span><span class="o">.</span><span class="n">ACTUAL_DRIVER</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">isFromeBind</span><span class="p">:</span>
             <span class="n">isActive</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">for</span> <span class="n">iframe</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iframes</span><span class="p">:</span>
@@ -585,7 +585,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">            document.documentElement.scrollTop = 0;</span>
-<span class="s2">            document.body.scrollTop = 0; // For compatibility with older browsers</span>
+<span class="s2">            document.body.scrollTop = 0; // For compatibility with older BrowserManagers</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 

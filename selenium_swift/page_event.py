@@ -1,4 +1,5 @@
-from selenium.webdriver.support import expected_conditions as EC 
+from selenium.webdriver.support import expected_conditions as EC
+from selenium import webdriver 
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver import Chrome,Firefox,Edge
@@ -6,14 +7,15 @@ from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from typing import Literal
 from .web_option import _WebOption
 from .web_service import WebService
-from .element import Element,_ElementHandler,Expect,Select2,Frame
+from .element import Element,_ElementHandler,Expect,Select2,Frame,_BY
 from .mouse_controller import MouseController
 import undetected_chromedriver as uc
 import asyncio
 from time import time 
 import os 
 from selenium_swift.alert_handler import AlertHandler
-_BY = Literal['css_selector','id','xpath','class','name','link_text','partial_link_text','tag_name']
+from concurrent.futures import ThreadPoolExecutor
+
 def normalize_url(url):
     # Parse the URL
     parsed_url = urlparse(url)
@@ -40,46 +42,73 @@ def normalize_url(url):
 
 def are_urls_equal(url1, url2):
     return normalize_url(url1) == normalize_url(url2)
-class Browser:
-    ACTUAL_DRIVER= None
-    def __init__(self,option:_WebOption,service:WebService,keep_alive=False,isUndetectChromedriver=False) -> None:
-        def __getDriver(options:_WebOption = None, service: WebService = None, keep_alive: bool = True,isUndetectChromedriver=False):
-            browser = options.browser
+
+class BrowserManager:
+    class Browser:pass 
+    ACTUAL_DRIVER = None
+    @staticmethod
+    def __getDriver(options:_WebOption = None, service: WebService = None, keep_alive: bool = True,remote_server_url:str = None):
+            browser_name = options.browser_name
+            undetect_chrome = options.undetect_chrome if browser_name=="chrome" else None
             options = options.options if options else None
             service = service.service if service else None
-            if browser == "chrome":
-                if isUndetectChromedriver:
+            if remote_server_url: return webdriver.Remote(command_executor=remote_server_url,options=options)
+            if browser_name == "chrome":
+                if undetect_chrome:
                     return uc.Chrome(options=options,service=service, keep_alive=keep_alive)
                 return Chrome(options, service, keep_alive)
-            elif browser == 'firefox':
+            elif browser_name == 'firefox':
                 return Firefox(service=service,options=options)
-            elif browser == 'edge':
+            elif browser_name == 'edge':
                 return Edge(options=options,service=service) 
-        self._driver = __getDriver(option,service,keep_alive,isUndetectChromedriver)
+        
+    def __init__(self,option:_WebOption,service:WebService,keep_alive=False,remote_server_url = None) -> None:
+        self._driver = BrowserManager.__getDriver(option,service,keep_alive,remote_server_url)
     
+ 
     @classmethod
-    def startBrowsers(cls,browsers:list['Browser']):
+    async def startBrowsers(cls,browsers:list['Browser'], mode: Literal['async','parallel'] = 'async', max_workers: int = 2):
         """
-        Starts multiple browser instances concurrently.
+        Starts multiple browser instances either concurrently using async or parallel using threads.
 
         Args:
-            browsers (list['Browser']): A list of Browser instances to start.
+            browsers (list['Browser']): A list of browser instances to start.
+            mode (str): Mode of execution, either 'async' for concurrency or 'parallel' for parallelism. Default is 'async'.
+            max_workers (int): Maximum number of workers/threads if 'parallel' mode is selected. Default is 2.
         """
-        async def __main(browser:'Browser',task:'PageEvent',is_new_tab=False):
+         
+        async def __main(browser:'BrowserManager',task:'PageEvent',is_new_tab=False):
             if is_new_tab:
                 browser._driver.switch_to.new_window('tab')
             browser._driver.isOpen = False 
             cls.ACTUAL_DRIVER = browser._driver
             await task()
-        async def gen_main(browser:Browser):
+        async def gen_main(browser:BrowserManager):
             methods = [getattr(browser, attr) for attr in dir(browser) if callable(getattr(browser, attr)) and attr.startswith('tab')]
             methods = [method for method in methods if asyncio.iscoroutinefunction(method)]
-             
             await asyncio.gather(*(__main(browser,methods[i], is_new_tab = i ) for i in range(len(methods))))
             browser._driver.quit()
-        async def main():
+        
+        async def async_mode():
             await asyncio.gather(*(gen_main(browser) for browser in browsers))
-        asyncio.run(main())  
+
+        # Parallel mode: Executes browsers in parallel threads
+        async def parallel_mode():
+            loop = asyncio.get_running_loop()
+            async def run_in_thread(browser):
+                return await gen_main(browser)
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                await asyncio.gather(
+                    *[loop.run_in_executor(executor, lambda b=b: asyncio.run(run_in_thread(b))) for b in browsers]
+                )
+        # Determine which mode to run
+        if mode == 'async':
+            await async_mode()  # Run concurrently using asyncio
+        elif mode == 'parallel':
+            await parallel_mode()  # Run in parallel using ThreadPoolExecutor
+        else:
+            raise ValueError(f"Invalid mode '{mode}'. Choose either 'async' or 'parallel'.")
+    
     async def get(self,url,in_:Literal['new-tab','this-tab']='this-tab')->'PageEvent':
         """
         Opens a specified URL in a new or existing browser tab.
@@ -136,7 +165,7 @@ class PageEvent:
         """
         if self.driver:
             return AlertHandler(self.driver)
-        return AlertHandler(Browser.ACTUAL_DRIVER)
+        return AlertHandler(BrowserManager.ACTUAL_DRIVER)
         
     async def wait_for_Download(self,download_path,timeout=60):
         """
@@ -176,7 +205,7 @@ class PageEvent:
     
     async def open(self,in_:Literal['new-tab','this-tab']='this-tab'):
         """
-        Opens the specified URL in a new or existing browser tab.
+        Opens the specified URL in a new or existing BrowserManager tab.
 
         Args:
             in_ (Literal['new-tab', 'this-tab']): The tab type to open the URL in.
@@ -184,10 +213,10 @@ class PageEvent:
         Returns:
             PageEvent: The current PageEvent instance.
         """
-        if not self.driver:self.driver = Browser.ACTUAL_DRIVER
-        if in_ == 'new-tab' and Browser.ACTUAL_DRIVER.isOpen:
+        if not self.driver:self.driver = BrowserManager.ACTUAL_DRIVER
+        if in_ == 'new-tab' and BrowserManager.ACTUAL_DRIVER.isOpen:
             self.driver.switch_to.new_window(in_)
-        Browser.ACTUAL_DRIVER.isOpen=True
+        BrowserManager.ACTUAL_DRIVER.isOpen=True
         self.driver.get(self.url)
         self._focus()
         await self.sleep(0)
@@ -209,7 +238,11 @@ class PageEvent:
         def __gotoPageInTab(tab:dict):
             if tab['page_id'] != self.driver.current_window_handle:
                 self.driver.switch_to.window(tab['page_id'])
-            index1 = tab['indices'].index(tab['actual_index'])
+            try:
+                index1 = tab['indices'].index(tab['actual_index'])
+            except:
+                index1 = tab['destroyed_index']
+                del tab['destroyed_index']
             index0 = tab['indices'].index(self.__page_index)
             dx = index0 - index1 
             if dx > 0:
@@ -232,8 +265,8 @@ class PageEvent:
             
             tab['actual_index'] = self.__page_index    
         if not self.driver :
-            self.driver = Browser.ACTUAL_DRIVER
-        Browser.ACTUAL_DRIVER = self.driver
+            self.driver = BrowserManager.ACTUAL_DRIVER
+        BrowserManager.ACTUAL_DRIVER = self.driver
         if not isFromeBind:
             isActive = False
             for iframe in self.iframes:
@@ -255,7 +288,11 @@ class PageEvent:
         
         for window in PageEvent.__WINDOWS:
             if id in window['page_id']:
-                actual_index = window['actual_index']
+                try:
+                    actual_index = window['actual_index']
+                except:
+                    actual_index = window['destroyed_index']
+                    del window['destroyed_index']
                 index0 = window['indices'].index(actual_index)
                 las_index = len(window['indices'])-1
                 dx = las_index-index0
@@ -342,21 +379,22 @@ class PageEvent:
         by = _ElementHandler._getSelector(by)
         args.update({"by":by,"value":value,'isAll':True})
         return _ElementHandler._sync_handler(self,args) 
-    async def close(self):
+    
+    def close(self):
         """
         Closes the current tab and switches to the previous one.
         """
         self._focus()
         id = self.driver.current_window_handle
         for window in PageEvent.__WINDOWS:
-            if id in window['page_id']:
+            if id == window['page_id']:
                 PageEvent.__WINDOWS.remove(window)
                 break
         self.driver.close()
         try:
             self.driver.switch_to.window(self.driver.window_handles[0])
         except:pass
-        await asyncio.sleep(0)
+        
     def is_at_bottom(self):
         """
         Checks if the current page is scrolled to the bottom.
@@ -444,9 +482,20 @@ class PageEvent:
         """
         self.driver.execute_script("""
             document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0; // For compatibility with older browsers
+            document.body.scrollTop = 0; // For compatibility with older BrowserManagers
         """)
         return self
+    def __del__(self):
+       
+        #print(f"Object '{self.__page_index}' is being destroyed.")
+        for window in PageEvent.__WINDOWS:
+            #print(self.__page_index,window['indices'])
+            if self.__page_index in window['indices']:
+                if len(window['indices']) == 1:
+                    self.close()
+                window['indices'].remove(self.__page_index)
+                window['destroyed_index'] = self.__page_index
+                break
     @property
     def mouse(self)->MouseController:
         if not self.__mouse_controller:

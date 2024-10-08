@@ -1,4 +1,4 @@
-from .page_event import PageEvent,Browser,NextPage
+from .page_event import PageEvent,BrowserManager,NextPage
 from .web_option import ChromeOption,EdgeOption,FirefoxOption
 from .web_service import ChromeService,EdgeService,FirefoxService
 
@@ -18,10 +18,10 @@ class PageScrape(PageEvent):
         Handles the response from web requests.
         
     crawl(**args):
-        Initiates the crawling process by opening the browser and handling responses.
+        Initiates the crawling process by opening the BrowserManager and handling responses.
         
     open():
-        Placeholder method for opening the browser.
+        Placeholder method for opening the BrowserManager.
     """
     async def onResponse(self,**arg):
         pass 
@@ -32,69 +32,80 @@ class PageScrape(PageEvent):
         pass
         
 # ********************* chrome *****************************
-class ChromeBrowser(Browser):
+class ChromeBrowser(BrowserManager):
     """
-    A class for managing a Chrome browser instance.
+    A class for managing a Chrome BrowserManager instance.
     
-    Inherits from the Browser class and provides initialization for Chrome-specific
+    Inherits from the BrowserManager class and provides initialization for Chrome-specific
     options and services.
 
     Parameters
     ----------
     option : ChromeOption
-        The options to configure the Chrome browser.
+        The options to configure the Chrome BrowserManager.
     service : ChromeService
-        The service to manage the Chrome browser instance.
+        The service to manage the Chrome BrowserManager instance.
     keep_alive : bool, optional
-        Whether to keep the browser session alive (default is False).
-    isUndetectChromedriver : bool, optional
-        Whether to use an undetectable ChromeDriver (default is False).
+        Whether to keep the BrowserManager session alive (default is False).
+    remote_server_url: |None
+        example:'http://127.0.0.1:4444/wd/hub' | None
+        To use the remote WebDriver, you should have the Selenium server running. To run the server, use this command:
+        java -jar selenium-server-standalone-2.x.x.jar
+        example:java -jar selenium-server-4.23.1.jar standalone
     """
-    def __init__(self,option:ChromeOption,service:ChromeService,keep_alive=False,isUndetectChromedriver=False) -> None:
+    def __init__(self,option:ChromeOption,service:ChromeService,keep_alive=False,remote_server_url=None) -> None:
         if not option:option = ChromeOption()
-        super().__init__(option,service,keep_alive,isUndetectChromedriver)
+        super().__init__(option,service,keep_alive,remote_server_url)
 
 # ********************* firefoxe ***************************
-class FireFoxBrowser(Browser):
+class FireFoxBrowser(BrowserManager):
     """
-    A class for managing a Firefox browser instance.
+    A class for managing a Firefox BrowserManager instance.
     
-    Inherits from the Browser class and provides initialization for Firefox-specific
+    Inherits from the BrowserManager class and provides initialization for Firefox-specific
     options and services.
 
     Parameters
     ----------
     option : FirefoxOption
-        The options to configure the Firefox browser.
+        The options to configure the Firefox BrowserManager.
     service : FirefoxService
-        The service to manage the Firefox browser instance.
+        The service to manage the Firefox BrowserManager instance.
     keep_alive : bool, optional
-        Whether to keep the browser session alive (default is False).
+        Whether to keep the BrowserManager session alive (default is False).
+    remote_server_url: 'http://127.0.0.1:4444/wd/hub' | None
+        To use the remote WebDriver, you should have the Selenium server running. To run the server, use this command:
+        java -jar selenium-server-standalone-2.x.x.jar
+        example:java -jar selenium-server-4.23.1.jar standalone
     """
-    def __init__(self,option:FirefoxOption,service:FirefoxService,keep_alive=False) -> None:
+    def __init__(self,option:FirefoxOption,service:FirefoxService,keep_alive=False,remote_server_url=None) -> None:
         if not option:option = FirefoxOption()
-        super().__init__(option,service,keep_alive)
+        super().__init__(option,service,keep_alive,remote_server_url)
 
 # ********************* edge *******************************
-class EdgeBrowser(Browser):
+class EdgeBrowser(BrowserManager):
     """
-    A class for managing an Edge browser instance.
+    A class for managing an Edge BrowserManager instance.
     
-    Inherits from the Browser class and provides initialization for Edge-specific
+    Inherits from the BrowserManager class and provides initialization for Edge-specific
     options and services.
 
     Parameters
     ----------
     option : EdgeOption
-        The options to configure the Edge browser.
+        The options to configure the Edge BrowserManager.
     service : EdgeService
-        The service to manage the Edge browser instance.
+        The service to manage the Edge BrowserManager instance.
     keep_alive : bool, optional
-        Whether to keep the browser session alive (default is False).
+        Whether to keep the BrowserManager session alive (default is False).
+    remote_server_url: 'http://127.0.0.1:4444/wd/hub' | None
+        To use the remote WebDriver, you should have the Selenium server running. To run the server, use this command:
+        java -jar selenium-server-standalone-2.x.x.jar
+        example:java -jar selenium-server-4.23.1.jar standalone
     """
-    def __init__(self,option:EdgeOption,service:EdgeService,keep_alive=False) -> None:
+    def __init__(self,option:EdgeOption,service:EdgeService,keep_alive=False,remote_server_url=None) -> None:
         if not option:option = EdgeOption()
-        super().__init__(option,service,keep_alive)
+        super().__init__(option,service,keep_alive,remote_server_url)
     
     
     

@@ -764,7 +764,7 @@ abbr, acronym {
 
 pre {
     overflow: auto;
-    overflow-y: hidden;  /* fixes display issues on Chrome browsers */
+    overflow-y: hidden;  /* fixes display issues on Chrome BrowserManagers */
 }
 
 pre, div[class*="highlight-"] {

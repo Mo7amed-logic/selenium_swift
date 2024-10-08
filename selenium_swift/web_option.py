@@ -1,6 +1,6 @@
 from selenium import webdriver
 from typing import Literal
- 
+import undetected_chromedriver as uc 
 args = Literal[
     '--user-data-dir=...',       # Path to the user data directory to retain browser state (cookies, cache)
     '--headless',                # Run the browser in headless mode (without UI)
@@ -25,12 +25,12 @@ args = Literal[
 ]
 
 class _WebOption:
-    def __init__(self,browser:Literal['chrome','edge','firefox'],page_load_strategy:Literal['normal','eager','none']='eager',*args:args) -> None:
+    def __init__(self,browser_name:Literal['chrome','edge','firefox'],page_load_strategy:Literal['normal','eager','none']='eager',*args:args) -> None:
         """
         Initialize WebDriver options for the specified browser.
 
         Args:
-            browser: The browser type ('chrome', 'edge', 'firefox').
+             
             page_load_strategy: Strategy for loading pages ('normal', 'eager', 'none').
             args: Additional arguments for configuring the WebDriver.
 
@@ -93,7 +93,7 @@ class _WebOption:
         def __addArg(arg:args):
             if  'download.default_directory' in arg:
                 download_dir = arg[arg.index('=')+1:]
-                if self.browser in ['chrome', 'edge']:
+                if self.browser_name in ['chrome', 'edge']:
                     self.options.add_experimental_option('prefs',{
                         "download.default_directory": download_dir,
                         "download.prompt_for_download": False,
@@ -105,13 +105,25 @@ class _WebOption:
                     profile.set_preference("browser.download.dir", download_dir)
                     profile.set_preference("browser.download.folderList", 2)  # Use custom download directory
                     profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/octet-stream")  # Adjust as needed
+            
             else:
+                print(arg)
                 self.options.add_argument(arg)
             return self 
-        self.browser = browser
-        if browser == 'chrome':self.options = webdriver.ChromeOptions()
-        if browser == 'edge': self.options = webdriver.EdgeOptions()
-        if browser == 'firefox':self.options = webdriver.FirefoxOptions()
+        self.browser_name = browser_name
+        
+        if browser_name == 'chrome':
+            self.undetect_chrome = False
+            for a in args:
+                if "--undetect_chrome_enable" in a:
+                    self.undetect_chrome=True 
+                    break
+            if not self.undetect_chrome:
+                self.options = webdriver.ChromeOptions()
+            else:
+                self.options = uc.ChromeOptions()
+        if browser_name == 'edge': self.options = webdriver.EdgeOptions()
+        if browser_name == 'firefox':self.options = webdriver.FirefoxOptions()
         for arg in args:
             __addArg(arg)
         self.options.page_load_strategy = page_load_strategy 

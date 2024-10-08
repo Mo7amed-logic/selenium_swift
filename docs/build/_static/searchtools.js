@@ -263,7 +263,7 @@ const Search = {
     }
     Search.startPulse();
 
-    // index already loaded, the browser was quick!
+    // index already loaded, the BrowserManager was quick!
     if (Search.hasIndex()) Search.query(query);
     else Search.deferQuery(query);
   },

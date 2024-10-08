@@ -1,2 +1,13 @@
-prune examples
-prune test
+# Exclude specific folders and files
+exclude examples/
+exclude tests/
+exclude down1/
+exclude down2/
+exclude selenium-server-4.23.1.jar
+exclude selen_img1.webp
+exclude .gitignore 
+
+# Include only specific files or directories
+include README.md
+include LICENSE
+recursive-include selenium_swift *.py

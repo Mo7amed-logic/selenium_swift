@@ -1,7 +1,7 @@
-from selenium_swift.browser import *
+from selenium_swift.BrowserManager import *
 
 
-class MyBrowser(ChromeBrowser):
+class MyBrowserManager(ChromeBrowserManager):
     def __init__(self) -> None:
         self.path_download = r"c:\Users\progr\OneDrive\Bureau\test_download"
         option = ChromeOption('download.default_directory='+self.path_download)
@@ -14,4 +14,4 @@ class MyBrowser(ChromeBrowser):
         await page.sleep(2)
 
 if __name__ == "__main__":
-    Browser.startBrowsers([MyBrowser()])
+    BrowserManager.startBrowserManagers([MyBrowserManager()])

@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='selenium_swift',
-    version='0.1.2',
+    version='0.1.3',
     author='Mo7amed-logic',
     author_email='medhasnaoui833@gmail.com',
     description='A high-performance async web scraping and automation framework using Selenium.',
@@ -17,7 +17,7 @@ setup(
     install_requires=[
         'selenium>=4.0.0',                 # Required for core Selenium functionality
         'aiohttp>=3.7.4',                  # Used for asynchronous operations
-        'webdriver-manager>=3.5.0',        # Manages browser drivers for Selenium
+        'webdriver-manager>=3.5.0',        # Manages BrowserManager drivers for Selenium
         'undetected-chromedriver>=3.0.0',  # Bypasses detection by websites
         'requests>=2.25.1',                # For HTTP requests to external services (e.g., fetching resources)
         'Pillow>=8.0.0', 
@@ -36,7 +36,7 @@ setup(
     include_package_data=True,  # To include non-code files, such as documentation or examples
     # entry_points={  # Uncomment to set up command-line tool if needed
     #     'console_scripts': [
-    #         'selenium_swift=selenium_swift.browser:main',  # Optional: command-line tool setup
+    #         'selenium_swift=selenium_swift.BrowserManager:main',  # Optional: command-line tool setup
     #     ],
     # },
     project_urls={  # Additional links, such as documentation and issues page
