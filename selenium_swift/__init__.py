@@ -1,12 +1,12 @@
 import requests
 import pkg_resources  # Part of setuptools
 
-__version__ = '0.1.5'  # Current version of your library
+__version__ = '0.1.6'  # Current version of your library
 
 def check_for_update():
     try:
         # Assuming your package is hosted on PyPI
-        latest_version = requests.get("https://pypi.org/pypi/my_library/json").json()["info"]["version"]
+        latest_version = requests.get("https://pypi.org/pypi/selenium-swift/json").json()["info"]["version"]
 
         if pkg_resources.parse_version(__version__) < pkg_resources.parse_version(latest_version):
             print(f"New version available: {latest_version}. Please update your library!")
