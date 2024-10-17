@@ -9,7 +9,8 @@ from typing import Callable, Coroutine, Union, Any
 import asyncio
 from typing import Literal
 from time import sleep
-import re
+import re,os
+from typing import Union, List
 _BY = Literal['css_selector','id','xpath','class','name','link_text','partial_link_text','tag_name']
 
 class _ElementHandler:
@@ -36,7 +37,7 @@ class _ElementHandler:
             return callback()
          
     @staticmethod
-    def _try_find(parent_element:WebElement,locator:By,value:str,timeout,condition_wait,k):
+    def _try_find(parent_element:'Element',locator:By,value:str,condition_wait,k):
         try:page = parent_element._info['page']
         except:page = parent_element
         def get_driver(isCanWebElement=True):
@@ -49,35 +50,38 @@ class _ElementHandler:
             return driver 
         driver = get_driver()
         isAll = condition_wait == EC.presence_of_all_elements_located
-        try:
-            
-            if isAll:
-                e = driver.find_elements(locator,value)
-                if not e:
-                    raise TimeoutError(f"Operation timed out after {timeout} seconds while waiting to find the elements (by='{locator}', value='{value}')") 
-            elif condition_wait == EC.presence_of_element_located:
-                e = driver.find_element(locator,value)
-            else:
-                e = condition_wait()
-            if e : return e
-        except Exception as e :
-            if k >= timeout : raise e
+        if isAll:
+            try:
+                e = driver.find_elements(locator,value) 
+            except:e = None
+        elif condition_wait == EC.presence_of_element_located:
+            try:e = driver.find_element(locator, value)
+            except:e = None
+        else:
+            e = condition_wait(k)
+        if not e:
             element = _ElementHandler._check_in_shadow_root(driver,get_driver(False),locator,value,isAll)
             if element: return element
             if type(driver) == WebElement and (k % 4 == 0):
                 _ElementHandler._refresh(parent_element)
                 driver = get_driver()
-             
             parent_element._focus()
-            return False
+        return e
+    @staticmethod
+    def _show_message_error(text):
+        print('+--- Element Error ------------------------')
+        print('|',text)
+        print('|')
+        print('+------------------------------------------')
+
     @staticmethod
     def _find_sync(parent_element,locator:By,value:str,timeout,condition_wait,on_try):
         #parent_element._focus()
         k = 0
-        
         while True:
-            e = _ElementHandler._try_find(parent_element,locator,value,timeout,condition_wait,k)
-            if e:return e 
+            e = _ElementHandler._try_find(parent_element,locator,value,condition_wait,k)
+            if e or k > timeout: 
+                return e 
             if on_try:on_try()
             k += 0.5
             sleep(0.5)
@@ -87,8 +91,9 @@ class _ElementHandler:
         #parent_element._focus()
         k = 0
         while True:
-            e = _ElementHandler._try_find(parent_element,locator,value,timeout,condition_wait,k)
-            if e:return e 
+            e = _ElementHandler._try_find(parent_element,locator,value,condition_wait,k)
+            if e or k > timeout:
+               return e 
             if on_try:
                 on_try()
             k += 0.5
@@ -113,7 +118,7 @@ class _ElementHandler:
             if isinstance(element,Element):return _ElementHandler._convertElement(element)
             else : return [_ElementHandler._convertElement(e) for e in element]
         elif type(element) == list:
-            return [_ElementHandler._convertElement(Element(e,parent_element,page,by,value,i,*d)) for i,e in enumerate(element)]
+            return ElementIter([_ElementHandler._convertElement(Element(e,parent_element,page,by,value,i,*d)) for i,e in enumerate(element)])
         return _ElementHandler._convertElement(Element(element,parent_element,page,by,value,-1))
     @staticmethod
     async def _async_handler(parent_element,args):
@@ -128,6 +133,9 @@ class _ElementHandler:
         else:
             d = _ElementHandler._getpredict(page,args,isAll)
             element = await _ElementHandler._find_async(parent_element,by,value,*d)
+            if not element : 
+                _ElementHandler._show_message_error(f"Operation timed out after '{d[0]} seconds' while waiting to find the element (by='{by}',value='{value}')")
+                return ElementIter(element)
             return _ElementHandler.__predictElement(element,parent_element,page,by,value,*d)
             
     @staticmethod
@@ -141,6 +149,9 @@ class _ElementHandler:
         else:
             d = _ElementHandler._getpredict(page,args,isAll)
             element = _ElementHandler._find_sync(parent_element,by,value,*d)
+            if not element : 
+                _ElementHandler._show_message_error(f"Operation timed out after '{d[0]} seconds' while waiting to find the element (by='{by}',value='{value}')")
+                return ElementIter(element)
             return _ElementHandler.__predictElement(element,parent_element,page,by,value,*d) 
     @staticmethod
     def _getSelector(selector:_BY):
@@ -260,8 +271,8 @@ class _ElementHandler:
                 return element 
              
         except Exception as e:
-            print(e,"")
-        
+            return None
+
 class Element:
     _EXPECT_ = False
     _FRAME_ON = False
@@ -379,18 +390,7 @@ class Element:
                 return arguments[0].scrollTop + arguments[0].clientHeight >= arguments[0].scrollHeight;
             """, element)
         return self.__update(callback)
-    def is_at_right(self):
-        """
-        Checks if the element is scrolled to the right edge.
-
-        :return: True if the element is at the right edge, False otherwise.
-        """
-        def callback():
-            element = self._info['e']
-            return self._info['page'].driver.execute_script("""
-                return arguments[0].scrollLeft + arguments[0].clientWidth >= arguments[0].scrollWidth;
-            """, element)
-        return self.__update(callback)
+    
     def scroll_x_by(self,dx):
         """
         Scrolls the element horizontally by the given offset.
@@ -417,7 +417,7 @@ class Element:
             self._info['page'].driver.execute_script(f"arguments[0].scrollTop += {dy}",element)
             return self 
         return self.__update(callback)
-    def scroll_xy_by(self,dx,dy):
+    def scroll_by(self,dx,dy):
         """
         Scrolls the element both horizontally and vertically by the given offsets.
 
@@ -431,7 +431,28 @@ class Element:
             self._info['page'].driver.execute_script(f"arguments[0].scrollLeft += {dx}; arguments[0].scrollTop += {dy};", element)
             return self 
         return self.__update(callback)
-    def scrollToBottom(self):
+    def scroll_to(self,x,y):
+        def callback():
+            nonlocal x,y 
+            element = self._info['e']
+            self._info['page'].driver.execute_script(f"arguments[0].scrollTo({x}, {y});", element)
+            return self 
+        return self.__update(callback)
+    def scroll_x_to(self,x):
+        def callback():
+            nonlocal x 
+            element = self._info['e']
+            self._info['page'].driver.execute_script(f"arguments[0].scrollLeft = {x};", element)
+            return self 
+        return self.__update(callback) 
+    def scroll_y_to(self,y):
+        def callback():
+            nonlocal y 
+            element = self._info['e']
+            self._info['page'].driver.execute_script(f"arguments[0].scrollTop = {y};", element)
+            return self 
+        return self.__update(callback)  
+    def scroll_to_bottom(self):
         """
         Scrolls the element to the bottom.
 
@@ -457,6 +478,7 @@ class Element:
             """, element)
             return self
         return self.__update(callback)
+    
     def send_keys(self, *value: str) :
         """
         Sends the specified keys to the element.
@@ -843,6 +865,295 @@ class Element:
             return (size['width'],size['height'])
         return self.__update(callback)
     
+
+class ElementIter:
+    def __init__(self,elements:list[Element]):
+        self.__elements = elements
+        self._index = 0 
+    def __iter__(self):
+        self._index = 0 
+        return self 
+    def __next__(self):
+        if self._index < len(self.__elements):
+            result = self.__elements[self._index]
+            self._index += 1
+            return result 
+        else:
+            raise StopIteration
+    def __getitem__(self, index):
+        # Implementing index access
+        return self.__elements[index]
+    def __bool__(self):
+        # Return False if 'a' is None, otherwise True
+        return  self.__elements != None
+    async def find_element(self,by:_BY,value:str,**args)-> 'ElementIter':
+        """
+        Asynchronously finds a single element by the given selector.
+
+        :param by: The strategy to locate the element (e.g., "id", "css_selector").
+        :param value: The value of the selector to locate the element.
+        :param args: Additional arguments for element handling .
+        :return: An Element, Frame, or Select2 object.
+        """
+        if not self.__elements: return self 
+        return ElementIter([await element.find_element(by,value) for element in self.__elements])
+         
+    async def find_elements(self,by:_BY,value:str,**args)->'ElementIter':
+        """
+        Asynchronously finds multiple elements by the given selector.
+
+        :param by: The strategy to locate elements (e.g., "id", "css_selector").
+        :param value: The value of the selector to locate the elements.
+        :param args: Additional arguments for element handling.
+        :return: A list of Element, Frame, or Select2 objects.
+        """
+        if not self.__elements: return self 
+        return ElementIter([await element.find_elements(by,value) for element in self.__elements])
+        
+    def find_element_sync(self,by:_BY,value,**args)-> 'ElementIter':
+        """
+        Synchronously finds a single element by the given selector.
+
+        :param by: The strategy to locate the element (e.g., "id", "css_selector").
+        :param value: The value of the selector to locate the element.
+        :param args: Additional arguments for element handling.
+        :return: An Element, Frame, or Select2 object.
+        """
+        if not self.__elements: return self 
+        return ElementIter([e.find_element_sync(by,value) for e in self.__elements] )
+    def find_elements_sync(self,by:_BY,value,**args)->'ElementIter':
+        """
+        Synchronously finds multiple elements by the given selector.
+
+        :param by: The strategy to locate elements (e.g., "id", "css_selector").
+        :param value: The value of the selector to locate the elements.
+        :param args: Additional arguments for element handling.
+        :return: A list of Element, Frame, or Select2 objects.
+        """
+        if not self.__elements: return self 
+        return ElementIter([e.find_elements_sync(by,value) for e in self.__elements])
+    
+    def wait_for(self,by:_BY,value:str,timeout=10)->'ElementIter':
+        """
+         Waits for a child element of the current element to be present on the page within the specified timeout. 
+
+    Example usage:
+        parent_element.wait_for('id', 'inp1', 5).has_attribute('display', 'block')
+
+    Args:
+        by (str): The type of locator to search by (e.g., 'id', 'name', 'css_selector', etc.).
+        value (str): The value of the locator to identify the target element.
+        timeout (int, optional): Maximum wait time in seconds. Defaults to 10.
+
+    Returns:
+        Expect: An Expect object, which allows chaining additional conditions like `has_attribute` or `to_be_present`.
+        """
+        if not self.__elements: return self 
+        return ElementIter([e.wait_for(by,value,timeout) for e in self.__elements])
+        
+    def check(self):
+        """
+        Checks or toggles the checkbox or radio button element if it is not already checked.
+
+        :return: The current element.
+        """
+        for e in self.__elements:e.check()
+    def uncheck(self):
+        """
+            Uncheck a checkbox if it is already checked. Radio buttons are typically not unchecked.
+            
+            :param element: The WebElement to uncheck.
+            :raises ValueError: If the element is not a checkbox.
+        """
+        for e in self.__elements:e.uncheck()
+    def click(self):
+        """
+        Clicks the element.
+
+        :return: The current element.
+        """
+        for e in self.__elements:e.click()
+    def clear(self):
+        """
+        Clears the content of an input or textarea element.
+
+        :return: The current element.
+        """
+        for e in self.__elements:e.clear()
+    def value_of_css_property(self, property_name) -> list[list[str] | str]:
+        """
+        Retrieves the value of a specific CSS property of the element.
+
+        :param property_name: The name of the CSS property.
+        :return: The value of the CSS property.
+        """
+        if not self.__elements: return [] 
+        return [e.value_of_css_property(property_name) for e in self.__elements]   
+    def is_displayed(self) -> list[list[bool] | bool]:
+        """
+        Checks if the element is currently displayed.
+
+        :return: True if the element is displayed, False otherwise.
+        """
+        if not self.__elements: return [] 
+        return [e.is_displayed() for e in self.__elements]
+    def is_enabled(self) -> list[list[bool] | bool]:
+        """
+        Checks if the element is currently enabled.
+
+        :return: True if the element is enabled, False otherwise.
+        """
+        if not self.__elements: return []
+        return [e.is_enabled() for e in self.__elements]
+    def is_selected(self) -> list[list[bool] | bool] :
+        """
+        Checks if the element (checkbox or radio button) is selected.
+
+        :return: True if the element is selected, False otherwise.
+        """
+        if not self.__elements: return []
+        return [e.is_selected() for e in self.__elements] 
+    def get_attribute(self, name) -> list[str | None] | list[list[str | None]]:
+        """
+        Retrieves the value of a specified attribute of the element.
+
+        :param name: The name of the attribute.
+        :return: The value of the attribute, or None if not present.
+        """
+        if not self.__elements: return []
+        return [e.get_attribute(name) for e in self.__elements]
+    def get_dom_attribute(self, name) -> list[str | None] | list[list[str | None]]:
+        """
+        Retrieves the value of a DOM attribute.
+
+        :param name: The name of the DOM attribute.
+        :return: The value of the DOM attribute.
+        """
+        if not self.__elements: return []
+        return [e.get_dom_attribute(name) for e in self.__elements]
+    def get_property(self, name) -> list[str | None] | list[list[str | None]]:
+        """
+        Retrieves the value of a specified property of the element.
+
+        :param name: The name of the property.
+        :return: The value of the property.
+        """
+        if not self.__elements: return []
+        return [e.get_property(name) for e in self.__elements]
+    def screenshot(self, filepath:str) -> list[list[bool | None] | bool]:
+        """
+        Takes a screenshot of the element and saves it to the specified file.
+
+        :param filepath: 
+            The path where the screenshot will be saved.
+            ex: c:/images/image0.jpg
+        :return: True if the screenshot is saved successfully, False otherwise.
+        """
+        if not self.__elements: return []
+        file_name:str = os.path.basename(filepath)
+        index = file_name.rfind('.')
+        file = file_name[:index]
+        extension = file_name[index:]
+        file_name = file
+        return [e.screenshot(file_name+str(i)+extension) for i,e in enumerate(self.__elements)]
+    
+    @property
+    def text(self)->list[list[str] | str]:
+        """
+        Retrieves the visible text content of the element.
+        :return: The text content of the element.
+        """
+        if not self.__elements: return []
+        return [e.text for e in self.__elements]
+    @property
+    def location(self)->list[list[tuple] | tuple]:
+        """
+        Retrieves the X and Y coordinates of the element's position.
+
+        :return: A tuple containing the X and Y coordinates.
+        """
+        if not self.__elements: return []
+        return [e.location for e in self.__elements]
+    @property 
+    def accessible_name(self)->list[list[str]|str]:
+        """
+        Retrieves the accessible name of the element.
+
+        :return: The accessible name of the element.
+        """
+        if not self.__elements: return []
+        return [e.accessible_name for e in self.__elements]
+    @property     
+    def aria_role(self)->list[list[str]|str]:
+        """
+        Retrieves the ARIA role of the element.
+
+        :return: The ARIA role of the element.
+        """
+        if not self.__elements: return []
+        return [e.aria_role for e in self.__elements]
+    @property 
+    def id(self)->list[list[str]|str]:
+        if not self.__elements: return []
+        return [e.id for e in self.__elements]
+    @property 
+    def location_once_scrolled_into_view(self)->list[list[tuple]|tuple]:
+        """
+        Retrieves the X and Y coordinates of the element once it is scrolled into view.
+
+        :return: A tuple containing the X and Y coordinates, representing the coordinates of the element.
+        """
+        if not self.__elements: return []
+        return [e.location_once_scrolled_into_view for e in self.__elements]
+    @property 
+    def parent(self)->list[list[Element]|Element]:
+        """
+        Retrieves the parent element of the current element.
+
+        :return: The parent Element.
+        """
+        if not self.__elements: return []
+        return [e.parent for e in self.__elements]
+    @property 
+    def screenshot_as_base64(self)->list[list[str] | str]:
+        """
+        Takes a screenshot of the element and returns it as a base64-encoded string.
+
+        :return: A base64-encoded string representing the screenshot of the element.
+        """
+        if not self.__elements: return []
+        return [e.screenshot_as_base64 for e in self.__elements]
+    @property 
+    def screenshot_as_png(self)->list[list[bytes] |bytes]:
+        """
+        Takes a screenshot of the element and returns it as a PNG image in byte format.
+
+        :return: A byte object representing the screenshot of the element in PNG format.
+        """
+        if not self.__elements: return []
+        return [e.screenshot_as_png for e in self.__elements]
+    @property 
+    def shadow_root(self)->list[list[ShadowRoot]|ShadowRoot]:
+        """
+        Retrieves the shadow root of the element if it exists.
+
+        :return: A ShadowRoot object if the element has a shadow DOM, otherwise None.
+        :raises NoSuchElementException: If the element does not have a shadow root.
+        """
+        if not self.__elements: return []
+        return [e.shadow_root for e in self.__elements]
+    @property 
+    def size(self)->list[list[tuple] |tuple]:
+        """
+        Retrieves the width and height of the element.
+
+        :return: A dictionary with the keys 'width' and 'height', representing the size of the element.
+        """
+        if not self.__elements: return []
+        return [e.size for e in self.__elements]
+    
+
+
 class Frame(Element):
     ACTUAL_FRAME_ID = -1
     ID_INC = 0
@@ -1025,30 +1336,37 @@ class Expect:
             except:p_e = p_e.driver
             return info ,p_e
         def _ps(self,info,p_e:WebElement,timeout,isAll=False):
-            def _predict():
+            def _predict(k):
                 nonlocal p_e
-                try:
-                    if not isAll:
+                if not isAll:
+                    try:
                         e = p_e.find_element(info['by'],info['value'])
                         info['e'] = e
                         return self.element
-                    else:
-                        elements:list[WebElement] = p_e.find_elements(info['by'],info['value'])
-                        p_e = info['parent_element']
-                        return [Element(e,p_e,info['page'],info['by'],
-                                        info['value'],i,info['timeout'],
-                                        info["condition_wait"],
-                                        info['on_try']) for i,e in enumerate(elements)]
-                except:
-                    by,value=info['by'],info['value']
-                    raise TimeoutError(f"Operation timed out after '{timeout} seconds' while waiting to find the element (by='{by}',value='{value}')")
+                    except:
+                        return None
+                else:
+                    elements:list[WebElement] = p_e.find_elements(info['by'],info['value'])
+                    if not elements:
+                        return None
+                    
+                    p_e = info['parent_element']
+                    return ElementIter([Element(e,p_e,info['page'],info['by'],
+                                    info['value'],i,info['timeout'],
+                                    info["condition_wait"],
+                                    info['on_try']) for i,e in enumerate(elements)])
+                
             return _predict
         def _att(self,info,p_e:WebElement,timeout,attr_name):
-            def _predict():
-                self._ps(info,p_e,timeout)()
+            def _predict(k):
+                e = self._ps(info,p_e,timeout)(k)
+                if not e : return e 
                 e:WebElement = info['e']
                 if e.get_attribute(attr_name):return self.element
-                raise TimeoutError(f"Operation timed out after '{timeout} seconds' while waiting for attribute '{attr_name}' to be found.")
+                if k > timeout:
+                    _ElementHandler._show_message_error(f"Operation timed out after '{timeout} seconds' while waiting for attribute '{attr_name}' to be found.")
+                return None
+               
             return _predict
     def __init__(self, handler: Union[Callable[[], None], Coroutine[Any, Any, None]],timeout=10) -> None:
         if not isinstance(handler, (Callable, Coroutine)):
@@ -1067,7 +1385,7 @@ class Expect:
         """
         exp = self.__Exp
         info,p_e = await exp._initExpect()
-        _predict = exp._ps(info,p_e)
+        _predict = exp._ps(info,p_e,self.timeout)
         return await exp._finaly(_predict,self.timeout,on_try)
     async def has_attribute(self,attr_name,on_try=None)->Element:
         """
@@ -1098,11 +1416,14 @@ class Expect:
         """
         exp = self.__Exp
         info ,p_e = await exp._initExpect()
-        def _predict():
-            exp._att(info,p_e,self.timeout,attr_name)() 
+        def _predict(k):
+            e = exp._att(info,p_e,self.timeout,attr_name)(k)
+            if not e:return e  
             e:WebElement = info['e']
             if e.get_attribute(attr_name) == value:return exp.element
-            raise TimeoutError(f"Operation timed out after '{self.timeout} seconds' while waiting for attribute '{attr_name}' has value = '{value}'")
+            if k > self.timeout:
+                _ElementHandler._show_message_error(f"Operation timed out after '{self.timeout} seconds' while waiting for attribute '{attr_name}' has value = '{value}'")
+            return None
         return await exp._finaly(_predict,self.timeout,on_try)
     async def has_text_exact_match(self,text:str,is_case_sensitive=True,on_try=None)->Element:
         """
@@ -1118,13 +1439,16 @@ class Expect:
         """
         exp = self.__Exp
         info, p_e = await exp._initExpect()
-        def _predict():
-            exp._ps(info,p_e,self.timeout)()
+        def _predict(k):
+            e=exp._ps(info,p_e,self.timeout)(k)
+            if not e:return e
             e:WebElement = info['e']
             check = text.strip() == e.text.strip() or \
                 not is_case_sensitive and text.strip().lower() == e.text.strip().lower()
             if check:return exp.element
-            raise TimeoutError(f"Operation timed out after '{self.timeout} seconds' while waiting for exact text '{text}'.") 
+            if k > self.timeout:
+                _ElementHandler._show_message_error(f"Operation timed out after '{self.timeout} seconds' while waiting for exact text '{text}'.") 
+            return None
         return await exp._finaly(_predict,self.timeout,on_try)
     async def contains_sub_text(self,text:str,is_case_sensitive=True,on_try=None):
         """
@@ -1140,13 +1464,16 @@ class Expect:
         """
         exp = self.__Exp
         info ,p_e = await exp._initExpect()
-        def _predict():
-            exp._ps(info,p_e,self.timeout)()
+        def _predict(k):
+            e = exp._ps(info,p_e,self.timeout)(k)
+            if not e: return e 
             e:WebElement = info['e']
             check = text.strip() in e.text.strip() or \
                     not is_case_sensitive and text.strip().lower() in e.text.strip().lower()
             if check:return exp.element
-            raise TimeoutError(f"TimeoutError:Operation timed out after '{self.timeout} seconds' while waiting for subtext '{text}' in the element.") 
+            if k > self.timeout:
+                _ElementHandler._show_message_error(f"TimeoutError:Operation timed out after '{self.timeout} seconds' while waiting for subtext '{text}' in the element.") 
+            return None
         return await exp._finaly(_predict,self.timeout,on_try)
     async def all_to_be_present(self,on_try=None)->list[Element | Frame | Select2]:
         """

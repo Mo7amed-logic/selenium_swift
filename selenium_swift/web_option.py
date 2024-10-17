@@ -20,8 +20,8 @@ args = Literal[
     '--start-maximized',         # Start browser maximized to avoid viewport issues
     '--disable-extensions',      # Disable all browser extensions
     '--window-size=1920,1080',   # Set custom window size
-    '--remote-debugging-port=9222'   # Enable remote debugging for troubleshooting
-    
+    '--remote-debugging-port=9222',   # Enable remote debugging for troubleshooting
+    "--undetect_chrome_enable"
 ]
 
 class _WebOption:
