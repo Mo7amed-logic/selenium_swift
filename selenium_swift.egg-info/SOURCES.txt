@@ -21,6 +21,5 @@ selenium_swift.egg-info/top_level.txt
 selenium_swift/captcha_to_solve/_2captcha.py
 selenium_swift/captcha_to_solve/__init__.py
 selenium_swift/captcha_to_solve/ai_captcha.py
-tests/test.py
 tests/test2.py
 tests/test3.py

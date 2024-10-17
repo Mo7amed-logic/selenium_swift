@@ -7,7 +7,7 @@ from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from typing import Literal
 from .web_option import _WebOption
 from .web_service import WebService
-from .element import Element,_ElementHandler,Expect,Select2,Frame,_BY
+from .element import Element,ElementIter,_ElementHandler,Expect,Select2,Frame,_BY
 from .mouse_controller import MouseController
 import undetected_chromedriver as uc
 import asyncio
@@ -65,7 +65,10 @@ class BrowserManager:
     def __init__(self,option:_WebOption,service:WebService,keep_alive=False,remote_server_url = None) -> None:
         self._driver = BrowserManager.__getDriver(option,service,keep_alive,remote_server_url)
     
- 
+    def __del__(self):
+        self.onClose()
+    def onClose(self):
+        pass 
     @classmethod
     async def startBrowsers(cls,browsers:list['Browser'], mode: Literal['async','parallel'] = 'async', max_workers: int = 2):
         """
@@ -76,13 +79,16 @@ class BrowserManager:
             mode (str): Mode of execution, either 'async' for concurrency or 'parallel' for parallelism. Default is 'async'.
             max_workers (int): Maximum number of workers/threads if 'parallel' mode is selected. Default is 2.
         """
-         
+        async def onfinish(tab):
+            page = await PageEvent('about:blank').open()
+            await tab()
+           
         async def __main(browser:'BrowserManager',task:'PageEvent',is_new_tab=False):
             if is_new_tab:
                 browser._driver.switch_to.new_window('tab')
             browser._driver.isOpen = False 
             cls.ACTUAL_DRIVER = browser._driver
-            await task()
+            await onfinish(task)
         async def gen_main(browser:BrowserManager):
             methods = [getattr(browser, attr) for attr in dir(browser) if callable(getattr(browser, attr)) and attr.startswith('tab')]
             methods = [method for method in methods if asyncio.iscoroutinefunction(method)]
@@ -95,12 +101,20 @@ class BrowserManager:
         # Parallel mode: Executes browsers in parallel threads
         async def parallel_mode():
             loop = asyncio.get_running_loop()
+
             async def run_in_thread(browser):
                 return await gen_main(browser)
+
             with ThreadPoolExecutor(max_workers=max_workers) as executor:
-                await asyncio.gather(
-                    *[loop.run_in_executor(executor, lambda b=b: asyncio.run(run_in_thread(b))) for b in browsers]
-                )
+                tasks = []
+                for b in browsers:
+                    # Schedule each browser to run in a separate thread
+                    tasks.append(loop.run_in_executor(executor, lambda b=b: asyncio.run(run_in_thread(b))))
+                    # Add a delay between starting each browser
+                    await asyncio.sleep(1)
+
+                # Await all the tasks after they have been scheduled
+                await asyncio.gather(*tasks)
         # Determine which mode to run
         if mode == 'async':
             await async_mode()  # Run concurrently using asyncio
@@ -290,10 +304,11 @@ class PageEvent:
             if id in window['page_id']:
                 try:
                     actual_index = window['actual_index']
+                    index0 = window['indices'].index(actual_index)
                 except:
-                    actual_index = window['destroyed_index']
+                    index0 = window['destroyed_index']
                     del window['destroyed_index']
-                index0 = window['indices'].index(actual_index)
+                
                 las_index = len(window['indices'])-1
                 dx = las_index-index0
                 for i in range(dx):window['indices'].pop()
@@ -344,7 +359,7 @@ class PageEvent:
         by = _ElementHandler._getSelector(by)
         args.update({"by":by,"value":value,'isAll':False})
         return await _ElementHandler._async_handler(self,args)
-    async def find_elements(self,by:_BY,value,**args)->list[Element]:
+    async def find_elements(self,by:_BY,value,**args)->ElementIter:
         self._focus()
         by = _ElementHandler._getSelector(by)
         args.update({"by":by,"value":value,'isAll':True})
@@ -364,7 +379,7 @@ class PageEvent:
         by = _ElementHandler._getSelector(by)
         args.update({"by":by,"value":value,'isAll':False})
         return _ElementHandler._sync_handler(self,args)
-    def find_elements_sync(self,by:_BY,value,**args)->list[Element]:
+    def find_elements_sync(self,by:_BY,value,**args)->ElementIter:
         """
         Finds multiple elements asynchronously.
 
@@ -406,17 +421,6 @@ class PageEvent:
             return document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight;
         """)
 
-    def is_at_right(self):
-        """
-        Checks if the current page is scrolled to the right.
-
-        Returns:
-            bool: True if at the right, False otherwise.
-        """
-        return self.driver.execute_script("""
-            return document.documentElement.scrollLeft + document.documentElement.clientWidth >= document.documentElement.scrollWidth;
-        """)
-
     def scroll_x_by(self, dx):
         """
         Scrolls the page horizontally by the specified amount.
@@ -445,7 +449,7 @@ class PageEvent:
         self.driver.execute_script(f"window.scrollBy(0,{dy});") 
         return self
 
-    def scroll_xy_by(self, dx, dy):
+    def scroll_by(self, dx, dy):
         """
         Scrolls the page by the specified amounts in both x and y directions.
 
@@ -461,8 +465,20 @@ class PageEvent:
             document.documentElement.scrollTop += {dy};
         """)
         return self
+     
+    def scroll_to(self,x,y):
+        self.driver.execute_script(f"window.scrollTo({x}, {y});")
+        return self
+    def scroll_x_to(self,x):
+        y = self.driver.execute_script("return window.pageYOffset;")
+        self.driver.execute_script(f"window.scrollTo({x}, {y});")
+        return self
+    def scroll_y_to(self,y):
+        x = self.driver.execute_script("return window.pageXOffset;")
+        self.driver.execute_script(f"window.scrollTo({x}, {y});")
+        return self
 
-    def scrollToBottom(self):
+    def scroll_to_bottom(self):
         """
         Scrolls to the bottom of the page.
 
@@ -486,15 +502,17 @@ class PageEvent:
         """)
         return self
     def __del__(self):
-       
+        pass
         #print(f"Object '{self.__page_index}' is being destroyed.")
+        
         for window in PageEvent.__WINDOWS:
             #print(self.__page_index,window['indices'])
             if self.__page_index in window['indices']:
                 if len(window['indices']) == 1:
                     self.close()
+                index = window['indices'].index(self.__page_index)
                 window['indices'].remove(self.__page_index)
-                window['destroyed_index'] = self.__page_index
+                window['destroyed_index'] = index 
                 break
     @property
     def mouse(self)->MouseController:

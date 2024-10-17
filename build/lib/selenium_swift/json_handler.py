@@ -7,7 +7,7 @@ def load_json_data(json_file_path: str) -> dict:
         print(f"File not found: {json_file_path}")
         return None
     try:
-        with open(json_file_path, "r") as file:
+        with open(json_file_path, "r", encoding='utf-8') as file:
             data = json.load(file)
         return data
     except json.JSONDecodeError as e:
