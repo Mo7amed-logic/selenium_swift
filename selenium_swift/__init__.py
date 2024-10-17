@@ -1,7 +1,7 @@
 import requests
 import pkg_resources  # Part of setuptools
 
-__version__ = '0.1.3'  # Current version of your library
+__version__ = '0.1.4'  # Current version of your library
 
 def check_for_update():
     try:
