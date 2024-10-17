@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='selenium_swift',
-    version='0.1.4',
+    version='0.1.5',
     author='Mo7amed-logic',
     author_email='medhasnaoui833@gmail.com',
     description='A high-performance async web scraping and automation framework using Selenium.',
@@ -15,12 +15,14 @@ setup(
     url='https://github.com/Mo7amed-logic/selenium_swift',
     packages=find_packages(exclude=["tests*", "examples*"]),  # Automatically find packages, excluding tests and examples
     install_requires=[
+        'setuptools', 
         'selenium>=4.0.0',                 # Required for core Selenium functionality
         'aiohttp>=3.7.4',                  # Used for asynchronous operations
         'webdriver-manager>=3.5.0',        # Manages BrowserManager drivers for Selenium
         'undetected-chromedriver>=3.0.0',  # Bypasses detection by websites
         'requests>=2.25.1',                # For HTTP requests to external services (e.g., fetching resources)
         'Pillow>=8.0.0', 
+        
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
